@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Matdagbok">
+<meta name="theme-color" content="#1C1917">
+<title>Matdagbok</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMUMxOTE3Ii8+PHRleHQgeD0iOTAiIHk9IjExNSIgZm9udC1zaXplPSI5MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+MrzwvdGV4dD48L3N2Zz4=">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#FAF7F2;--warm-white:#FDF9F4;--ink:#1C1917;--ink-light:#44403C;--ink-muted:#78716C;
+    --sage:#7D9B76;--sage-light:#B8D0B3;--sage-bg:#EFF5EE;
+    --amber:#D97706;--amber-bg:#FEF3C7;--rose:#E07070;--rose-bg:#FEE2E2;
+    --border:#E8E0D5;--shadow:rgba(28,25,23,0.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;font-size:15px;}
+
+  header{background:var(--ink);color:var(--cream);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  header h1{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;}
+  .sub{font-size:0.75rem;color:#A8A29E;font-weight:300;}
+
+  .tabs{display:flex;background:var(--warm-white);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .tab{flex:1;padding:14px 6px;text-align:center;font-size:0.74rem;font-weight:500;color:var(--ink-muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;min-width:60px;}
+  .tab.active{color:var(--ink);border-bottom-color:var(--sage);}
+  .tab .ti{font-size:1.1rem;display:block;margin-bottom:2px;}
+
+  .page{display:none;padding:20px 16px;max-width:600px;margin:0 auto;}
+  .page.active{display:block;}
+
+  .card{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px var(--shadow);}
+  .card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+
+  label{display:block;font-size:0.78rem;font-weight:500;color:var(--ink-light);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
+  input[type="text"],input[type="time"],input[type="date"],textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);background:var(--cream);margin-bottom:14px;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--sage);background:white;}
+  textarea{resize:vertical;min-height:70px;}
+  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .chip{padding:7px 14px;border:1.5px solid var(--border);border-radius:50px;font-size:0.82rem;cursor:pointer;transition:all 0.15s;background:white;color:var(--ink-light);font-family:'DM Sans',sans-serif;}
+  .chip:hover{border-color:var(--sage);}
+  .chip.selected{background:var(--sage);border-color:var(--sage);color:white;font-weight:500;}
+  .chip.sc.selected{background:var(--rose);border-color:var(--rose);}
+  .chip.rc{background:var(--amber-bg);border-color:#F6D28A;color:var(--amber);}
+  .chip.rc:hover{border-color:var(--amber);}
+
+  .slider-wrap{margin-bottom:14px;}
+  .slider-labels{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--ink-muted);margin-top:4px;}
+  input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,var(--rose) 0%,var(--rose) var(--val,20%),var(--border) var(--val,20%));margin:0;padding:0;border:none;margin-bottom:0;}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:white;border:2px solid var(--rose);box-shadow:0 1px 4px var(--shadow);cursor:pointer;}
+
+  .btn{width:100%;padding:15px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
+  .btn-primary{background:var(--ink);color:var(--cream);}
+  .btn-primary:active{transform:scale(0.98);background:#3C3733;}
+  .btn-secondary{background:transparent;color:var(--ink-muted);border:1.5px solid var(--border);margin-top:8px;font-size:0.88rem;padding:11px;}
+
+  /* Ingredient editor */
+  .ing-editor{background:var(--cream);border:1.5px solid var(--sage-light);border-radius:12px;padding:14px;margin-bottom:14px;}
+  .ing-title{font-size:0.78rem;font-weight:500;color:var(--sage);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;}
+  .ing-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+  .ing-tag{display:flex;align-items:center;gap:5px;background:white;border:1.5px solid var(--border);border-radius:50px;padding:5px 10px 5px 13px;font-size:0.82rem;}
+  .ing-tag button{background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:0.9rem;padding:0;line-height:1;}
+  .ing-tag button:hover{color:var(--rose);}
+  .ing-add-row{display:flex;gap:8px;}
+  .ing-add-row input{margin-bottom:0;flex:1;padding:9px 12px;font-size:0.88rem;}
+  .ing-add-btn{background:var(--sage);color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.85rem;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+  .preset-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .preset-chips .chip{font-size:0.78rem;padding:5px 11px;}
+
+  /* Recipe list */
+  .recipe-item{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .recipe-name{font-weight:500;font-size:0.95rem;}
+  .recipe-ings{font-size:0.78rem;color:var(--ink-muted);margin-top:3px;}
+  .r-actions{display:flex;gap:6px;flex-shrink:0;}
+  .r-actions button{background:none;border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .r-actions .use-btn{background:var(--sage);color:white;border-color:var(--sage);}
+  .r-actions .del-btn{color:var(--rose);}
+
+  /* Log entries */
+  .entry{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
+  .entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sage);}
+  .entry.se::before{background:var(--rose);}
+  .entry-time{font-size:0.75rem;color:var(--ink-muted);margin-bottom:4px;font-weight:500;}
+  .entry-title{font-weight:500;font-size:0.95rem;color:var(--ink);margin-bottom:4px;}
+  .entry-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
+  .tag{padding:3px 10px;border-radius:50px;font-size:0.72rem;font-weight:500;}
+  .tf{background:var(--sage-bg);color:var(--sage);}
+  .ts{background:var(--amber-bg);color:var(--amber);}
+  .entry-del{position:absolute;right:12px;top:12px;background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:1rem;padding:4px;opacity:0.5;}
+  .entry-del:hover{opacity:1;color:var(--rose);}
+
+  .empty-state{text-align:center;padding:40px 20px;color:var(--ink-muted);}
+  .empty-state .ei{font-size:2.5rem;margin-bottom:12px;}
+  .empty-state p{font-size:0.9rem;line-height:1.6;}
+
+  .bar-wrap{margin-bottom:14px;}
+  .bar-label{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:6px;color:var(--ink-light);}
+  .bar-bg{background:var(--border);border-radius:4px;height:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--sage),var(--rose));transition:width 0.6s ease;}
+
+  .sl{font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:10px;margin-top:4px;}
+  .info-box{background:var(--sage-bg);border:1px solid var(--sage-light);border-radius:10px;padding:12px 14px;font-size:0.82rem;color:var(--ink-light);line-height:1.6;margin-bottom:16px;}
+  .pwa-box{background:var(--amber-bg);border:1px solid #F6D28A;border-radius:10px;padding:14px 16px;font-size:0.83rem;color:var(--ink-light);line-height:1.7;margin-bottom:16px;}
+  .pwa-box strong{color:var(--amber);}
+  .step{margin-bottom:6px;padding-left:4px;}
+
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:white;padding:12px 24px;border-radius:50px;font-size:0.85rem;font-weight:500;z-index:999;transition:transform 0.3s ease;pointer-events:none;white-space:nowrap;}
+  .toast.show{transform:translateX(-50%) translateY(0);}
+
+  .ai-result{background:white;border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:12px;font-size:0.9rem;line-height:1.7;color:var(--ink-light);}
+  .ai-result h4{font-family:'Playfair Display',serif;color:var(--ink);margin-bottom:8px;font-size:1rem;}
+  .ld::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+  @keyframes dots{0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}}
+
+  .date-header{font-family:'Playfair Display',serif;font-size:0.9rem;color:var(--ink-muted);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--warm-white);border-radius:20px 20px 0 0;padding:24px 20px 44px;width:100%;max-width:600px;margin:0 auto;max-height:85vh;overflow-y:auto;}
+  .modal-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:16px;}
+  .modal-close{float:right;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--ink-muted);margin-top:-4px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Matdagbok</h1>
+    <div class="sub" id="entry-count">Ingen oppføringer ennå</div>
+  </div>
+  <span style="font-size:1.4rem">🌿</span>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showPage('log')"><span class="ti">🍽️</span>Mat</div>
+  <div class="tab" onclick="showPage('symptom')"><span class="ti">🩺</span>Symptom</div>
+  <div class="tab" onclick="showPage('history')"><span class="ti">📋</span>Logg</div>
+  <div class="tab" onclick="showPage('analysis')"><span class="ti">🔍</span>Analyse</div>
+  <div class="tab" onclick="showPage('recipes')"><span class="ti">📖</span>Retter</div>
+</div>
+
+<!-- ══ MAT ══ -->
+<div class="page active" id="page-log">
+  <div class="card">
+    <div class="card-title">🍽️ Legg til måltid</div>
+
+    <div id="qp-wrap" style="display:none;margin-bottom:14px;">
+      <label>Velg lagret rett</label>
+      <div class="chips" id="qp-chips"></div>
+    </div>
+
+    <div class="row-2">
+      <div><label>Dato</label><input type="date" id="food-date"></div>
+      <div><label>Tidspunkt</label><input type="time" id="food-time"></div>
+    </div>
+
+    <label>Navn på rett / måltid</label>
+    <input type="text" id="food-name" placeholder="F.eks. havregrøt med melk…" oninput="suggestFoods(this.value)">
+    <div id="food-sug" class="chips" style="margin-top:-8px;margin-bottom:10px;"></div>
+
+    <label>Måltidstype</label>
+    <div class="chips" id="meal-chips">
+      <div class="chip" onclick="toggleChip(this,'meal')">🌅 Frokost</div>
+      <div class="chip" onclick="toggleChip(this,'meal')">☀️ Lunsj</div>
+      <div class="chip" onclick="toggleChip(this,'meal')">🌆 Middag</div>
+      <div class="chip" onclick="toggleChip(this,'meal')">🌙 Kvelds</div>
+      <div class="chip" onclick="toggleChip(this,'meal')">☕ Snacks</div>
+    </div>
+
+    <label>Ingredienser</label>
+    <div class="ing-editor">
+      <div class="ing-title">🧩 Ingredienser i dette måltidet</div>
+      <div class="ing-tags" id="ing-tags"></div>
+      <div class="ing-add-row">
+        <input type="text" id="ing-inp" placeholder="Skriv ingrediens og trykk +" onkeydown="if(event.key==='Enter'){addIng();event.preventDefault()}">
+        <button class="ing-add-btn" onclick="addIng()">+ Legg til</button>
+      </div>
+      <div class="preset-chips">
+        <div class="chip" onclick="addIngV('🥛 Melk')">🥛 Melk</div>
+        <div class="chip" onclick="addIngV('🌾 Gluten')">🌾 Gluten</div>
+        <div class="chip" onclick="addIngV('🥚 Egg')">🥚 Egg</div>
+        <div class="chip" onclick="addIngV('🥜 Nøtter')">🥜 Nøtter</div>
+        <div class="chip" onclick="addIngV('🐟 Fisk')">🐟 Fisk</div>
+        <div class="chip" onclick="addIngV('🌶️ Krydret')">🌶️ Krydret</div>
+        <div class="chip" onclick="addIngV('🍺 Alkohol')">🍺 Alkohol</div>
+        <div class="chip" onclick="addIngV('☕ Koffein')">☕ Koffein</div>
+        <div class="chip" onclick="addIngV('🧅 Løk')">🧅 Løk</div>
+        <div class="chip" onclick="addIngV('🧄 Hvitløk')">🧄 Hvitløk</div>
+        <div class="chip" onclick="addIngV('🍅 Tomat')">🍅 Tomat</div>
+        <div class="chip" onclick="addIngV('🫘 Belgfrukter')">🫘 Belgfrukter</div>
+      </div>
+    </div>
+
+    <label>Notater</label>
+    <textarea id="food-notes" placeholder="Mengde, tilberedning, eller annet…"></textarea>
+
+    <button class="btn btn-primary" onclick="saveFood()">✓ Lagre måltid</button>
+    <button class="btn btn-secondary" onclick="openSaveRecModal()">📖 Lagre som rett</button>
+  </div>
+</div>
+
+<!-- ══ SYMPTOM ══ -->
+<div class="page" id="page-symptom">
+  <div class="card">
+    <div class="card-title">🩺 Legg til symptom</div>
+    <div class="row-2">
+      <div><label>Dato</label><input type="date" id="sym-date"></div>
+      <div><label>Tidspunkt</label><input type="time" id="sym-time"></div>
+    </div>
+    <label>Type symptom</label>
+    <div class="chips" id="sym-chips">
+      <div class="chip sc" onclick="toggleChip(this,'sym')">🤢 Kvalme</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">💨 Oppblåst</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">🤔 Magesmerter</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">🚽 Diaré</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">🧱 Forstoppelse</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">😴 Tretthet</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">🤧 Hodepine</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">😤 Halsbrann</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">😶 Hud/utslett</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">😮‍💨 Tungpustethet</div>
+      <div class="chip sc" onclick="toggleChip(this,'sym')">🌙 Søvnvansker</div>
+    </div>
+    <label>Alvorlighetsgrad</label>
+    <div class="slider-wrap">
+      <input type="range" id="severity" min="1" max="10" value="3" oninput="updateSlider(this)" style="--val:20%">
+      <div class="slider-labels"><span>1 – Mild</span><span id="sev-val">3</span><span>10 – Alvorlig</span></div>
+    </div>
+    <label>Tid etter siste måltid</label>
+    <select id="sym-delay">
+      <option value="">Velg…</option>
+      <option value="under30">Under 30 min</option>
+      <option value="30-60">30–60 min</option>
+      <option value="1-2t">1–2 timer</option>
+      <option value="2-4t">2–4 timer</option>
+      <option value="4t+">Mer enn 4 timer</option>
+    </select>
+    <label>Notater</label>
+    <textarea id="sym-notes" placeholder="Beskriv symptomet nærmere…"></textarea>
+    <button class="btn btn-primary" onclick="saveSymptom()">✓ Lagre symptom</button>
+  </div>
+</div>
+
+<!-- ══ HISTORIKK ══ -->
+<div class="page" id="page-history">
+  <div id="history-list">
+    <div class="empty-state"><div class="ei">📖</div><p>Loggen din er tom.<br>Begynn med å registrere et måltid!</p></div>
+  </div>
+</div>
+
+<!-- ══ ANALYSE ══ -->
+<div class="page" id="page-analysis">
+  <div class="info-box">💡 Analysen ser etter mønstre mellom det du spiser og symptomene du opplever. Jo mer data du logger, desto bedre blir innsikten.</div>
+  <div id="stats-sec"></div>
+  <div class="card">
+    <div class="card-title">🤖 AI-drevet analyse</div>
+    <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:14px;line-height:1.6;">Klikk under for en dypere analyse med konkrete anbefalinger.</p>
+    <button class="btn btn-primary" onclick="runAI()" id="ai-btn">✨ Analyser mine data</button>
+    <div id="ai-result"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">📤 Eksporter data</div>
+    <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:16px;line-height:1.6;">Velg tidsperiode og eksporter logg og analyse.</p>
+    <div class="row-2">
+      <div><label>Fra dato</label><input type="date" id="exp-from"></div>
+      <div><label>Til dato</label><input type="date" id="exp-to"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-secondary" style="margin-top:0;flex:1;" onclick="setExpRange('week')">Siste uke</button>
+      <button class="btn btn-secondary" style="margin-top:0;flex:1;" onclick="setExpRange('month')">Siste måned</button>
+      <button class="btn btn-secondary" style="margin-top:0;flex:1;" onclick="setExpRange('all')">All tid</button>
+    </div>
+    <div style="height:14px;"></div>
+    <button class="btn btn-primary" onclick="exportCSV()" style="margin-bottom:10px;">📊 Last ned som Excel/CSV</button>
+    <button class="btn btn-secondary" style="margin-top:0;" onclick="exportPrint()">🖨️ Skriv ut / lagre som PDF</button>
+  </div>
+</div>
+
+<!-- ══ RETTER ══ -->
+<div class="page" id="page-recipes">
+  <div class="pwa-box">
+    <strong>📱 Legg til på iPhone-hjemskjermen:</strong>
+    <div class="step">1. Åpne denne filen i <strong>Safari</strong></div>
+    <div class="step">2. Trykk <strong>Del-ikonet</strong> (firkant med pil opp, nederst)</div>
+    <div class="step">3. Velg <strong>«Legg til på hjemskjerm»</strong></div>
+    <div class="step">4. Gi den et navn og trykk <strong>Legg til</strong></div>
+    Dataene lagres automatisk i Safari og er der neste gang du åpner appen. 🌿
+  </div>
+  <div class="card">
+    <div class="card-title">📖 Lagrede retter</div>
+    <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:14px;line-height:1.6;">
+      Lagre retter med ingredienser her. Velg en rett fra Mat-fanen for å fylle ut ingrediensene automatisk – du kan alltid redigere dem etterpå.
+    </p>
+    <div id="rec-list">
+      <div class="empty-state" style="padding:16px 0;"><div class="ei" style="font-size:1.8rem">🍳</div><p style="font-size:0.85rem">Ingen retter lagret ennå.<br>Gå til Mat → lagre et måltid som rett.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Lagre rett -->
+<div class="modal-overlay" id="m-save" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('m-save').classList.remove('open')">✕</button>
+    <div class="modal-title">📖 Lagre som rett</div>
+    <label>Navn på retten</label>
+    <input type="text" id="rec-name-inp" placeholder="F.eks. Havregrøt med bær…">
+    <p style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:14px;">Ingrediensene du har lagt til tas med automatisk.</p>
+    <button class="btn btn-primary" onclick="saveRecipe()">💾 Lagre rett</button>
+  </div>
+</div>
+
+<!-- MODAL: Rediger rett -->
+<div class="modal-overlay" id="m-edit" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('m-edit').classList.remove('open')">✕</button>
+    <div class="modal-title">✏️ Rediger rett</div>
+    <input type="hidden" id="edit-rec-id">
+    <label>Navn</label>
+    <input type="text" id="edit-rec-name">
+    <label>Ingredienser</label>
+    <div class="ing-editor">
+      <div class="ing-tags" id="edit-ing-tags"></div>
+      <div class="ing-add-row">
+        <input type="text" id="edit-ing-inp" placeholder="Legg til ingrediens…" onkeydown="if(event.key==='Enter'){addEditIng();event.preventDefault()}">
+        <button class="ing-add-btn" onclick="addEditIng()">+ Legg til</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="updateRecipe()">✓ Oppdater rett</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let entries  = JSON.parse(localStorage.getItem('mb_entries')  || '[]');
+let recipes  = JSON.parse(localStorage.getItem('mb_recipes')  || '[]');
+let curIngs  = [];
+let editIngs = [];
+
+// ── INIT ──
+function init() {
+  const now=new Date(), pad=n=>String(n).padStart(2,'0');
+  const today=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+  const time=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  ['food-date','sym-date','exp-to'].forEach(id=>{ const el=document.getElementById(id); if(el&&!el.value) el.value=today; });
+  const expFrom=document.getElementById('exp-from'); if(expFrom&&!expFrom.value){const f=new Date(now);f.setMonth(f.getMonth()-1);expFrom.value=`${f.getFullYear()}-${pad(f.getMonth()+1)}-${pad(f.getDate())}`; }
+  ['food-time','sym-time'].forEach(id=>{ const el=document.getElementById(id); if(el&&!el.value) el.value=time; });
+  renderIngTags(); renderQP(); updateHeader();
+}
+
+// ── TABS ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  ['log','symptom','history','analysis','recipes'].forEach((n,i)=>{ if(n===id) document.querySelectorAll('.tab')[i].classList.add('active'); });
+  if(id==='history') renderHistory();
+  if(id==='analysis') renderAnalysis();
+  if(id==='recipes') renderRecList();
+}
+
+// ── CHIPS ──
+function toggleChip(el,g) {
+  if(g==='meal') el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.toggle('selected');
+}
+function getSelChips(id) { return [...document.querySelectorAll(`#${id} .chip.selected`)].map(c=>c.textContent.trim()); }
+
+// ── SLIDER ──
+function updateSlider(el) {
+  el.style.setProperty('--val',((el.value-1)/9*100)+'%');
+  document.getElementById('sev-val').textContent=el.value;
+}
+
+// ── INGREDIENT EDITOR (food form) ──
+function renderIngTags() {
+  document.getElementById('ing-tags').innerHTML=curIngs.map((ing,i)=>
+    `<div class="ing-tag">${ing}<button onclick="rmIng(${i})">✕</button></div>`).join('');
+}
+function addIng() {
+  const inp=document.getElementById('ing-inp'), v=inp.value.trim();
+  if(v&&!curIngs.includes(v)){curIngs.push(v);renderIngTags();}
+  inp.value='';
+}
+function addIngV(v) { if(!curIngs.includes(v)){curIngs.push(v);renderIngTags();} }
+function rmIng(i) { curIngs.splice(i,1);renderIngTags(); }
+
+// ── INGREDIENT EDITOR (edit modal) ──
+function renderEditIngTags() {
+  document.getElementById('edit-ing-tags').innerHTML=editIngs.map((ing,i)=>
+    `<div class="ing-tag">${ing}<button onclick="rmEditIng(${i})">✕</button></div>`).join('');
+}
+function addEditIng() {
+  const inp=document.getElementById('edit-ing-inp'), v=inp.value.trim();
+  if(v&&!editIngs.includes(v)){editIngs.push(v);renderEditIngTags();}
+  inp.value='';
+}
+function rmEditIng(i) { editIngs.splice(i,1);renderEditIngTags(); }
+
+// ── SUGGEST ──
+const cFoods=['Havregrøt','Brød','Pasta','Ris','Laks','Kylling','Egg','Yoghurt','Melk','Ost','Eple','Banan','Salat','Tomat','Gulrot','Brokkoli','Linser','Bønner','Kaffe','Te','Juice','Smoothie'];
+function suggestFoods(val) {
+  const w=document.getElementById('food-sug');
+  if(!val||val.length<2){w.innerHTML='';return;}
+  const all=[...new Set([...cFoods,...recipes.map(r=>r.name)])];
+  const m=all.filter(f=>f.toLowerCase().includes(val.toLowerCase())).slice(0,5);
+  w.innerHTML=m.map(f=>`<div class="chip" onclick="document.getElementById('food-name').value='${f}';document.getElementById('food-sug').innerHTML=''">${f}</div>`).join('');
+}
+
+// ── QUICK PICK ──
+function renderQP() {
+  const wrap=document.getElementById('qp-wrap'), chips=document.getElementById('qp-chips');
+  if(!recipes.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  chips.innerHTML=recipes.map(r=>`<div class="chip rc" onclick="loadRec('${r.id}')">🍳 ${r.name}</div>`).join('');
+}
+function loadRec(id) {
+  const r=recipes.find(r=>r.id==id); if(!r)return;
+  document.getElementById('food-name').value=r.name;
+  curIngs=[...r.ingredients]; renderIngTags();
+  showToast(`«${r.name}» lastet – rediger gjerne ingrediensene`);
+}
+
+// ── SAVE FOOD ──
+function saveFood() {
+  const name=document.getElementById('food-name').value.trim();
+  if(!name){showToast('Skriv inn hva du spiste');return;}
+  entries.push({id:Date.now(),type:'food',date:document.getElementById('food-date').value,time:document.getElementById('food-time').value,name,meal:getSelChips('meal-chips'),ingredients:[...curIngs],notes:document.getElementById('food-notes').value.trim()});
+  save(); document.getElementById('food-name').value=''; document.getElementById('food-notes').value='';
+  document.querySelectorAll('#meal-chips .chip').forEach(c=>c.classList.remove('selected'));
+  curIngs=[]; renderIngTags(); showToast('Måltid lagret ✓'); init();
+}
+
+// ── SAVE SYMPTOM ──
+function saveSymptom() {
+  const syms=getSelChips('sym-chips');
+  if(!syms.length){showToast('Velg minst ett symptom');return;}
+  entries.push({id:Date.now(),type:'symptom',date:document.getElementById('sym-date').value,time:document.getElementById('sym-time').value,symptoms:syms,severity:parseInt(document.getElementById('severity').value),delay:document.getElementById('sym-delay').value,notes:document.getElementById('sym-notes').value.trim()});
+  save(); document.getElementById('sym-notes').value=''; document.getElementById('sym-delay').value='';
+  document.getElementById('severity').value=3; updateSlider(document.getElementById('severity'));
+  document.querySelectorAll('#sym-chips .chip').forEach(c=>c.classList.remove('selected'));
+  showToast('Symptom lagret ✓'); init();
+}
+
+function save() { localStorage.setItem('mb_entries',JSON.stringify(entries)); updateHeader(); }
+function delEntry(id) { entries=entries.filter(e=>e.id!==id); save(); renderHistory(); }
+
+// ── RECIPE CRUD ──
+function openSaveRecModal() {
+  document.getElementById('rec-name-inp').value=document.getElementById('food-name').value;
+  document.getElementById('m-save').classList.add('open');
+}
+function saveRecipe() {
+  const name=document.getElementById('rec-name-inp').value.trim();
+  if(!name){showToast('Gi retten et navn');return;}
+  if(!curIngs.length){showToast('Legg til minst én ingrediens');return;}
+  recipes.push({id:Date.now(),name,ingredients:[...curIngs]});
+  localStorage.setItem('mb_recipes',JSON.stringify(recipes));
+  renderQP(); document.getElementById('m-save').classList.remove('open');
+  showToast(`«${name}» lagret ✓`);
+}
+function openEditRec(id) {
+  const r=recipes.find(r=>r.id==id); if(!r)return;
+  document.getElementById('edit-rec-id').value=r.id;
+  document.getElementById('edit-rec-name').value=r.name;
+  editIngs=[...r.ingredients]; renderEditIngTags();
+  document.getElementById('m-edit').classList.add('open');
+}
+function updateRecipe() {
+  const id=parseInt(document.getElementById('edit-rec-id').value);
+  const name=document.getElementById('edit-rec-name').value.trim();
+  if(!name){showToast('Gi retten et navn');return;}
+  const idx=recipes.findIndex(r=>r.id==id); if(idx===-1)return;
+  recipes[idx]={id,name,ingredients:[...editIngs]};
+  localStorage.setItem('mb_recipes',JSON.stringify(recipes));
+  renderRecList(); renderQP(); document.getElementById('m-edit').classList.remove('open');
+  showToast('Rett oppdatert ✓');
+}
+function delRecipe(id) {
+  recipes=recipes.filter(r=>r.id!=id);
+  localStorage.setItem('mb_recipes',JSON.stringify(recipes));
+  renderRecList(); renderQP(); showToast('Rett slettet');
+}
+function renderRecList() {
+  const list=document.getElementById('rec-list');
+  if(!recipes.length){list.innerHTML=`<div class="empty-state" style="padding:16px 0;"><div class="ei" style="font-size:1.8rem">🍳</div><p style="font-size:0.85rem">Ingen retter lagret ennå.<br>Gå til Mat → lagre et måltid som rett.</p></div>`;return;}
+  list.innerHTML=recipes.map(r=>`<div class="recipe-item"><div><div class="recipe-name">🍳 ${r.name}</div><div class="recipe-ings">${r.ingredients.join(', ')||'Ingen ingredienser'}</div></div><div class="r-actions"><button class="use-btn" onclick="loadRecAndGo('${r.id}')">Bruk</button><button onclick="openEditRec('${r.id}')">✏️</button><button class="del-btn" onclick="delRecipe('${r.id}')">🗑</button></div></div>`).join('');
+}
+function loadRecAndGo(id) { loadRec(id); showPage('log'); }
+
+function closeModal(e) { if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); }
+
+// ── HISTORY ──
+function renderHistory() {
+  const list=document.getElementById('history-list');
+  if(!entries.length){list.innerHTML=`<div class="empty-state"><div class="ei">📖</div><p>Loggen din er tom.</p></div>`;return;}
+  const sorted=[...entries].sort((a,b)=>new Date(b.date+'T'+(b.time||'00:00'))-new Date(a.date+'T'+(a.time||'00:00')));
+  let html='',lastDate='';
+  for(const e of sorted){
+    if(e.date!==lastDate){html+=`<div class="date-header">${fmtDate(e.date)}</div>`;lastDate=e.date;}
+    if(e.type==='food'){
+      html+=`<div class="entry"><button class="entry-del" onclick="delEntry(${e.id})">✕</button><div class="entry-time">🕐 ${e.time}${e.meal?.length?' · '+e.meal.join(', '):''}</div><div class="entry-title">🍽️ ${e.name}</div><div class="entry-tags">${(e.ingredients||[]).map(i=>`<span class="tag tf">${i}</span>`).join('')}</div>${e.notes?`<div style="font-size:0.8rem;color:var(--ink-muted);margin-top:6px">${e.notes}</div>`:''}</div>`;
+    } else {
+      html+=`<div class="entry se"><button class="entry-del" onclick="delEntry(${e.id})">✕</button><div class="entry-time">🕐 ${e.time}${e.delay?' · '+dlbl(e.delay)+' etter mat':''}</div><div class="entry-title">🩺 ${e.symptoms?.join(', ')}</div><div class="entry-tags"><span class="tag ts">Alvorlighet: ${e.severity}/10</span></div>${e.notes?`<div style="font-size:0.8rem;color:var(--ink-muted);margin-top:6px">${e.notes}</div>`:''}</div>`;
+    }
+  }
+  list.innerHTML=html;
+}
+function dlbl(v){return{'under30':'under 30 min','30-60':'30–60 min','1-2t':'1–2 t','2-4t':'2–4 t','4t+':'4+ t'}[v]||v;}
+function fmtDate(d){return d?new Date(d+'T12:00:00').toLocaleDateString('no-NO',{weekday:'long',day:'numeric',month:'long'}):'';}
+
+// ── ANALYSIS ──
+function renderAnalysis() {
+  const foods=entries.filter(e=>e.type==='food'), syms=entries.filter(e=>e.type==='symptom');
+  const sec=document.getElementById('stats-sec');
+  if(foods.length<3||syms.length<2){sec.innerHTML=`<div class="empty-state"><div class="ei">📊</div><p>Du trenger minst <strong>3 måltider</strong> og <strong>2 symptomer</strong>.<br><br>Du har: <strong>${foods.length} måltider</strong> og <strong>${syms.length} symptomer</strong>.</p></div>`;return;}
+  const sc={};
+  for(const s of syms){
+    const sDT=new Date(s.date+'T'+(s.time||'12:00'));
+    const rel=foods.filter(f=>{const d=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/60000;return d>=0&&d<=240;});
+    for(const f of rel) [f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;});
+  }
+  const ranked=Object.entries(sc).map(([k,v])=>({name:k,score:v.t/Math.max(syms.length,1),count:v.c})).sort((a,b)=>b.score-a.score).slice(0,6);
+  const maxS=ranked[0]?.score||1;
+  let html=`<p class="sl">Mulige utløsere</p>`;
+  if(!ranked.length){html+=`<div class="empty-state"><div class="ei">🔍</div><p>Ingen klare mønstre ennå.</p></div>`;}
+  else{
+    html+=`<div class="card">`;
+    ranked.forEach(r=>{const p=Math.round((r.score/maxS)*100),em=r.score>maxS*0.7?'⚠️':r.score>maxS*0.4?'🟡':'🟢';html+=`<div class="bar-wrap"><div class="bar-label"><span>${em} ${r.name}</span><span>${r.count}x</span></div><div class="bar-bg"><div class="bar-fill" style="width:${p}%"></div></div></div>`;});
+    html+=`</div>`;
+  }
+  const symC={};
+  syms.forEach(s=>(s.symptoms||[]).forEach(sym=>{symC[sym]=(symC[sym]||0)+1;}));
+  const topS=Object.entries(symC).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  if(topS.length){
+    html+=`<p class="sl" style="margin-top:20px">Hyppigste symptomer</p><div class="card">`;
+    topS.forEach(([sym,cnt])=>{html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:0.9rem">${sym}</span><span style="font-size:0.85rem;color:var(--rose);font-weight:500">${cnt} gang${cnt>1?'er':''}</span></div>`;});
+    html+=`</div>`;
+  }
+  sec.innerHTML=html;
+}
+
+// ── AI ──
+async function runAI() {
+  const foods=entries.filter(e=>e.type==='food'), syms=entries.filter(e=>e.type==='symptom');
+  if(foods.length<3||syms.length<2){showToast('Logg mer data først!');return;}
+  const btn=document.getElementById('ai-btn'), result=document.getElementById('ai-result');
+  btn.disabled=true; btn.textContent='Analyserer'; btn.classList.add('ld');
+  result.innerHTML=`<div class="ai-result" style="color:var(--ink-muted)">Analyserer dine data<span class="ld"></span></div>`;
+  const prompt=`Du er en ernærings- og fordøyelsesekspert. Analyser følgende mat- og symptomlogg og gi en grundig, empatisk og personlig analyse på norsk.\n\nDATA:\n${JSON.stringify({matvarer:foods,symptomer:syms},null,2)}\n\nGi en analyse med disse delene:\n1. **Sammendrag** (2-3 setninger)\n2. **Mulige matvare-utløsere** (basert på tidsmønster)\n3. **Anbefalinger** (konkrete, praktiske råd)\n4. **Hva bør logges videre**\n\nVær konkret og personlig på norsk. Avslutt med en oppmuntrende setning.`;
+  try {
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'Kunne ikke hente analyse.';
+    result.innerHTML=`<div class="ai-result"><h4>🤖 AI-analyse</h4>${text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/^(\d+\. )/gm,'<br><strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
+  }catch(e){result.innerHTML=`<div class="ai-result" style="color:var(--rose)">Noe gikk galt. Prøv igjen.</div>`;}
+  btn.disabled=false; btn.textContent='✨ Analyser mine data'; btn.classList.remove('ld');
+}
+
+// ── EXPORT ──
+function setExpRange(r) {
+  const now=new Date(), pad=n=>String(n).padStart(2,'0');
+  const fmt=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const toEl=document.getElementById('exp-to'), fromEl=document.getElementById('exp-from');
+  toEl.value=fmt(now);
+  if(r==='week'){const f=new Date(now);f.setDate(f.getDate()-7);fromEl.value=fmt(f);}
+  else if(r==='month'){const f=new Date(now);f.setMonth(f.getMonth()-1);fromEl.value=fmt(f);}
+  else{fromEl.value='2020-01-01';}
+}
+
+function getExpEntries() {
+  const from=document.getElementById('exp-from').value;
+  const to=document.getElementById('exp-to').value;
+  if(!from||!to){showToast('Velg tidsperiode først');return null;}
+  const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
+  if(!filtered.length){showToast('Ingen data i valgt periode');return null;}
+  return {filtered, from, to};
+}
+
+function exportCSV() {
+  const res=getExpEntries(); if(!res)return;
+  const {filtered,from,to}=res;
+
+  // Sheet 1: Matlogg
+  let csv='MATLOGG\n';
+  csv+='Dato,Tidspunkt,Rett,Måltidstype,Ingredienser,Notater\n';
+  filtered.filter(e=>e.type==='food').forEach(e=>{
+    const row=[e.date,e.time||'',e.name,(e.meal||[]).join(' | '),(e.ingredients||[]).join(' | '),(e.notes||'').replace(/,/g,' ')];
+    csv+=row.map(v=>`"${v}"`).join(',')+'\n';
+  });
+
+  csv+='\nSYMPTOMLOGG\n';
+  csv+='Dato,Tidspunkt,Symptomer,Alvorlighet (1-10),Tid etter mat,Notater\n';
+  filtered.filter(e=>e.type==='symptom').forEach(e=>{
+    const row=[e.date,e.time||'',(e.symptoms||[]).join(' | '),e.severity||'',dlbl(e.delay||''),(e.notes||'').replace(/,/g,' ')];
+    csv+=row.map(v=>`"${v}"`).join(',')+'\n';
+  });
+
+  // Simple correlation summary
+  const foods=filtered.filter(e=>e.type==='food');
+  const syms=filtered.filter(e=>e.type==='symptom');
+  if(foods.length&&syms.length){
+    csv+='\nKORRELASJONSSAMMENDRAG\n';
+    csv+='Matvare/Ingrediens,Antall treff før symptom,Score\n';
+    const sc={};
+    syms.forEach(s=>{
+      const sDT=new Date(s.date+'T'+(s.time||'12:00'));
+      foods.filter(f=>{const d=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/60000;return d>=0&&d<=240;})
+        .forEach(f=>[f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;}));
+    });
+    Object.entries(sc).sort((a,b)=>b[1].t-a[1].t).forEach(([k,v])=>{
+      csv+=`"${k}","${v.c}","${(v.t/Math.max(syms.length,1)).toFixed(1)}"\n`;
+    });
+  }
+
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`matdagbok_${from}_${to}.csv`; a.click();
+  URL.revokeObjectURL(url);
+  showToast('CSV lastet ned ✓');
+}
+
+function exportPrint() {
+  const res=getExpEntries(); if(!res)return;
+  const {filtered,from,to}=res;
+  const foods=filtered.filter(e=>e.type==='food');
+  const syms=filtered.filter(e=>e.type==='symptom');
+
+  // Build correlation
+  const sc={};
+  syms.forEach(s=>{
+    const sDT=new Date(s.date+'T'+(s.time||'12:00'));
+    foods.filter(f=>{const d=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/60000;return d>=0&&d<=240;})
+      .forEach(f=>[f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;}));
+  });
+  const ranked=Object.entries(sc).map(([k,v])=>({name:k,score:v.t/Math.max(syms.length,1),count:v.c})).sort((a,b)=>b.score-a.score).slice(0,8);
+
+  const symC={};
+  syms.forEach(s=>(s.symptoms||[]).forEach(sym=>{symC[sym]=(symC[sym]||0)+1;}));
+
+  const sorted=[...filtered].sort((a,b)=>new Date(a.date+'T'+(a.time||'00:00'))-new Date(b.date+'T'+(b.time||'00:00')));
+
+  let html=`<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8">
+  <title>Matdagbok ${from} – ${to}</title>
+  <style>
+    body{font-family:Georgia,serif;max-width:800px;margin:0 auto;padding:32px;color:#1C1917;font-size:13px;}
+    h1{font-size:2rem;margin-bottom:4px;} .sub{color:#78716C;margin-bottom:32px;font-size:0.85rem;}
+    h2{font-size:1.2rem;margin:28px 0 12px;border-bottom:2px solid #E8E0D5;padding-bottom:6px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px;}
+    th{background:#1C1917;color:white;padding:8px 10px;text-align:left;}
+    td{padding:7px 10px;border-bottom:1px solid #E8E0D5;vertical-align:top;}
+    tr:nth-child(even) td{background:#FAF7F2;}
+    .badge{display:inline-block;background:#EFF5EE;color:#7D9B76;border-radius:50px;padding:2px 8px;font-size:11px;margin:2px;}
+    .badge.red{background:#FEE2E2;color:#E07070;}
+    .bar-wrap{margin:6px 0;}
+    .bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
+    .bar-bg{background:#E8E0D5;border-radius:3px;height:8px;}
+    .bar-fill{height:8px;border-radius:3px;background:linear-gradient(90deg,#7D9B76,#E07070);}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+    .stat{background:#FAF7F2;border:1px solid #E8E0D5;border-radius:10px;padding:14px;text-align:center;}
+    .stat-num{font-size:1.8rem;font-weight:700;}
+    .stat-lbl{font-size:0.75rem;color:#78716C;}
+    @media print{body{padding:16px;} button{display:none;}}
+  </style></head><body>
+  <h1>🌿 Matdagbok</h1>
+  <div class="sub">Rapport: ${fmtDate(from)} – ${fmtDate(to)}</div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">${foods.length}</div><div class="stat-lbl">Måltider logget</div></div>
+    <div class="stat"><div class="stat-num">${syms.length}</div><div class="stat-lbl">Symptomer logget</div></div>
+    <div class="stat"><div class="stat-num">${syms.length?Math.round(syms.reduce((a,s)=>a+s.severity,0)/syms.length*10)/10:'-'}</div><div class="stat-lbl">Snitt alvorlighetsgrad</div></div>
+  </div>`;
+
+  if(ranked.length){
+    const maxS=ranked[0].score;
+    html+=`<h2>🔍 Mulige utløsere</h2><table><tr><th>Matvare / Ingrediens</th><th>Treff</th><th>Korrelasjon</th></tr>`;
+    ranked.forEach(r=>{
+      const pct=Math.round((r.score/maxS)*100);
+      const em=r.score>maxS*0.7?'⚠️':r.score>maxS*0.4?'🟡':'🟢';
+      html+=`<tr><td>${em} ${r.name}</td><td>${r.count}x</td><td><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></td></tr>`;
+    });
+    html+=`</table>`;
+  }
+
+  if(Object.keys(symC).length){
+    html+=`<h2>🩺 Hyppigste symptomer</h2><table><tr><th>Symptom</th><th>Antall ganger</th></tr>`;
+    Object.entries(symC).sort((a,b)=>b[1]-a[1]).forEach(([s,c])=>{html+=`<tr><td>${s}</td><td>${c}</td></tr>`;});
+    html+=`</table>`;
+  }
+
+  html+=`<h2>📋 Fullstendig logg</h2><table><tr><th>Dato</th><th>Tid</th><th>Type</th><th>Detaljer</th></tr>`;
+  sorted.forEach(e=>{
+    if(e.type==='food'){
+      const ings=(e.ingredients||[]).map(i=>`<span class="badge">${i}</span>`).join('');
+      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🍽️ Mat</td><td><strong>${e.name}</strong>${e.meal?.length?' · '+e.meal.join(', '):''}${ings?'<br>'+ings:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
+    } else {
+      const slist=(e.symptoms||[]).map(s=>`<span class="badge red">${s}</span>`).join('');
+      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🩺 Symptom</td><td>${slist}<br>Alvorlighet: <strong>${e.severity}/10</strong>${e.delay?' · '+dlbl(e.delay)+' etter mat':''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
+    }
+  });
+  html+=`</table><p style="margin-top:32px;color:#78716C;font-size:11px;text-align:center;">Generert av Matdagbok · ${new Date().toLocaleDateString('no-NO')}</p></body></html>`;
+
+  const w=window.open('','_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(()=>w.print(),600);
+}
+
+// ── UTILS ──
+function updateHeader() {
+  const f=entries.filter(e=>e.type==='food').length, s=entries.filter(e=>e.type==='symptom').length;
+  document.getElementById('entry-count').textContent=entries.length===0?'Ingen oppføringer ennå':`${f} måltider · ${s} symptomer`;
+}
+function showToast(msg) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+init();
+</script>
+</body>
+</html>
