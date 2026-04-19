@@ -278,6 +278,10 @@
     <div style="height:14px;"></div>
     <button class="btn btn-primary" onclick="exportCSV()" style="margin-bottom:10px;">📊 Last ned som Excel/CSV</button>
     <button class="btn btn-secondary" style="margin-top:0;" onclick="exportPrint()">🖨️ Skriv ut / lagre som PDF</button>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+      <p style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:10px;line-height:1.5;">💾 <strong>Sikkerhetskopi</strong> – eksporter alle data som JSON-fil før du bytter til ny versjon av appen.</p>
+      <button class="btn btn-secondary" style="margin-top:0;border-color:var(--sage);color:var(--sage);" onclick="exportJSON()">💾 Eksporter alle data (JSON)</button>
+    </div>
   </div>
 </div>
 
@@ -710,6 +714,17 @@ function exportPrint() {
   w.document.write(html);
   w.document.close();
   setTimeout(()=>w.print(),600);
+}
+
+// ── JSON EXPORT ──
+function exportJSON() {
+  const data = { version:1, exportDate:new Date().toISOString(), entries:entries, recipes:recipes };
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href=url; a.download=`matdagbok_backup_${new Date().toISOString().slice(0,10)}.json`; a.click();
+  URL.revokeObjectURL(url);
+  showToast('JSON-backup lastet ned ✓');
 }
 
 // ── UTILS ──
