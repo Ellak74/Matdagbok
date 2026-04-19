@@ -11,119 +11,148 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxODAgMTgwIj48cmVjdCB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgcng9IjQwIiBmaWxsPSIjMUMxOTE3Ii8+PHRleHQgeD0iOTAiIHk9IjExNSIgZm9udC1zaXplPSI5MCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+8J+MrzwvdGV4dD48L3N2Zz4=">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --cream:#FAF7F2;--warm-white:#FDF9F4;--ink:#1C1917;--ink-light:#44403C;--ink-muted:#78716C;
-    --sage:#7D9B76;--sage-light:#B8D0B3;--sage-bg:#EFF5EE;
-    --amber:#D97706;--amber-bg:#FEF3C7;--rose:#E07070;--rose-bg:#FEE2E2;
-    --border:#E8E0D5;--shadow:rgba(28,25,23,0.08);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;font-size:15px;}
+:root {
+  --cream:#FAF7F2; --warm-white:#FDF9F4; --ink:#1C1917; --ink-light:#44403C; --ink-muted:#78716C;
+  --sage:#7D9B76; --sage-light:#B8D0B3; --sage-bg:#EFF5EE;
+  --amber:#D97706; --amber-bg:#FEF3C7;
+  --rose:#E07070; --rose-bg:#FEE2E2;
+  --blue:#5B8DB8; --blue-bg:#EBF3FA;
+  --border:#E8E0D5; --shadow:rgba(28,25,23,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;font-size:15px;}
 
-  header{background:var(--ink);color:var(--cream);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
-  header h1{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;}
-  .sub{font-size:0.75rem;color:#A8A29E;font-weight:300;}
+header{background:var(--ink);color:var(--cream);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+header h1{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:600;}
+.sub{font-size:0.72rem;color:#A8A29E;font-weight:300;}
 
-  .tabs{display:flex;background:var(--warm-white);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  .tab{flex:1;padding:14px 6px;text-align:center;font-size:0.74rem;font-weight:500;color:var(--ink-muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;min-width:60px;}
-  .tab.active{color:var(--ink);border-bottom-color:var(--sage);}
-  .tab .ti{font-size:1.1rem;display:block;margin-bottom:2px;}
+.tabs{display:flex;background:var(--warm-white);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex:0 0 auto;padding:12px 10px;text-align:center;font-size:0.7rem;font-weight:500;color:var(--ink-muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;min-width:56px;}
+.tab.active{color:var(--ink);border-bottom-color:var(--sage);}
+.tab .ti{font-size:1rem;display:block;margin-bottom:2px;}
 
-  .page{display:none;padding:20px 16px;max-width:600px;margin:0 auto;}
-  .page.active{display:block;}
+.page{display:none;padding:18px 16px 80px;max-width:600px;margin:0 auto;}
+.page.active{display:block;}
 
-  .card{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px var(--shadow);}
-  .card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.card{background:var(--warm-white);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px var(--shadow);}
+.card-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 
-  label{display:block;font-size:0.78rem;font-weight:500;color:var(--ink-light);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
-  input[type="text"],input[type="time"],input[type="date"],textarea,select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);background:var(--cream);margin-bottom:14px;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
-  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--sage);background:white;}
-  textarea{resize:vertical;min-height:70px;}
-  .row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+label{display:block;font-size:0.75rem;font-weight:500;color:var(--ink-light);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.05em;}
+input[type="text"],input[type="time"],input[type="date"],input[type="number"],textarea,select{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:var(--ink);background:var(--cream);margin-bottom:13px;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--sage);background:white;}
+textarea{resize:vertical;min-height:65px;}
+.row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
-  .chip{padding:7px 14px;border:1.5px solid var(--border);border-radius:50px;font-size:0.82rem;cursor:pointer;transition:all 0.15s;background:white;color:var(--ink-light);font-family:'DM Sans',sans-serif;}
-  .chip:hover{border-color:var(--sage);}
-  .chip.selected{background:var(--sage);border-color:var(--sage);color:white;font-weight:500;}
-  .chip.sc.selected{background:var(--rose);border-color:var(--rose);}
-  .chip.rc{background:var(--amber-bg);border-color:#F6D28A;color:var(--amber);}
-  .chip.rc:hover{border-color:var(--amber);}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:13px;}
+.chip{padding:6px 13px;border:1.5px solid var(--border);border-radius:50px;font-size:0.8rem;cursor:pointer;transition:all 0.15s;background:white;color:var(--ink-light);font-family:'DM Sans',sans-serif;}
+.chip:hover{border-color:var(--sage);}
+.chip.selected{background:var(--sage);border-color:var(--sage);color:white;font-weight:500;}
+.chip.sc.selected{background:var(--rose);border-color:var(--rose);}
+.chip.ac.selected{background:var(--blue);border-color:var(--blue);}
+.chip.rc{background:var(--amber-bg);border-color:#F6D28A;color:var(--amber);}
+.chip.rc:hover{border-color:var(--amber);}
 
-  .slider-wrap{margin-bottom:14px;}
-  .slider-labels{display:flex;justify-content:space-between;font-size:0.75rem;color:var(--ink-muted);margin-top:4px;}
-  input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,var(--rose) 0%,var(--rose) var(--val,20%),var(--border) var(--val,20%));margin:0;padding:0;border:none;margin-bottom:0;}
-  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:white;border:2px solid var(--rose);box-shadow:0 1px 4px var(--shadow);cursor:pointer;}
+.slider-wrap{margin-bottom:13px;}
+.slider-labels{display:flex;justify-content:space-between;font-size:0.73rem;color:var(--ink-muted);margin-top:4px;}
+input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,var(--rose) 0%,var(--rose) var(--val,20%),var(--border) var(--val,20%));margin:0;padding:0;border:none;margin-bottom:0;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:white;border:2px solid var(--rose);box-shadow:0 1px 4px var(--shadow);cursor:pointer;}
 
-  .btn{width:100%;padding:15px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
-  .btn-primary{background:var(--ink);color:var(--cream);}
-  .btn-primary:active{transform:scale(0.98);background:#3C3733;}
-  .btn-secondary{background:transparent;color:var(--ink-muted);border:1.5px solid var(--border);margin-top:8px;font-size:0.88rem;padding:11px;}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
+.btn-primary{background:var(--ink);color:var(--cream);}
+.btn-primary:active{transform:scale(0.98);}
+.btn-secondary{background:transparent;color:var(--ink-muted);border:1.5px solid var(--border);margin-top:8px;font-size:0.85rem;padding:10px;}
+.btn-blue{background:var(--blue);color:white;margin-top:8px;}
+.btn-green{background:var(--sage);color:white;margin-top:8px;}
 
-  /* Ingredient editor */
-  .ing-editor{background:var(--cream);border:1.5px solid var(--sage-light);border-radius:12px;padding:14px;margin-bottom:14px;}
-  .ing-title{font-size:0.78rem;font-weight:500;color:var(--sage);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;}
-  .ing-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
-  .ing-tag{display:flex;align-items:center;gap:5px;background:white;border:1.5px solid var(--border);border-radius:50px;padding:5px 10px 5px 13px;font-size:0.82rem;}
-  .ing-tag button{background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:0.9rem;padding:0;line-height:1;}
-  .ing-tag button:hover{color:var(--rose);}
-  .ing-add-row{display:flex;gap:8px;}
-  .ing-add-row input{margin-bottom:0;flex:1;padding:9px 12px;font-size:0.88rem;}
-  .ing-add-btn{background:var(--sage);color:white;border:none;border-radius:8px;padding:9px 14px;font-size:0.85rem;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
-  .preset-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-  .preset-chips .chip{font-size:0.78rem;padding:5px 11px;}
+/* Ingredient editor */
+.ing-editor{background:var(--cream);border:1.5px solid var(--sage-light);border-radius:12px;padding:13px;margin-bottom:13px;}
+.ing-title{font-size:0.75rem;font-weight:500;color:var(--sage);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:9px;}
+.ing-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:10px;}
+.ing-tag{display:flex;align-items:center;gap:5px;background:white;border:1.5px solid var(--border);border-radius:50px;padding:4px 10px 4px 12px;font-size:0.8rem;}
+.ing-tag button{background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:0.85rem;padding:0;line-height:1;}
+.ing-tag button:hover{color:var(--rose);}
+.ing-add-row{display:flex;gap:8px;}
+.ing-add-row input{margin-bottom:0;flex:1;padding:8px 11px;font-size:0.85rem;}
+.ing-add-btn{background:var(--sage);color:white;border:none;border-radius:8px;padding:8px 13px;font-size:0.83rem;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.preset-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px;}
+.preset-chips .chip{font-size:0.76rem;padding:4px 10px;}
+.freq-badge{font-size:0.65rem;background:var(--amber-bg);color:var(--amber);border-radius:50px;padding:1px 5px;margin-left:2px;}
 
-  /* Recipe list */
-  .recipe-item{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .recipe-name{font-weight:500;font-size:0.95rem;}
-  .recipe-ings{font-size:0.78rem;color:var(--ink-muted);margin-top:3px;}
-  .r-actions{display:flex;gap:6px;flex-shrink:0;}
-  .r-actions button{background:none;border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
-  .r-actions .use-btn{background:var(--sage);color:white;border-color:var(--sage);}
-  .r-actions .del-btn{color:var(--rose);}
+/* Activity */
+.act-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:13px;}
+.act-type-btn{padding:12px 10px;border:1.5px solid var(--border);border-radius:12px;text-align:center;cursor:pointer;background:white;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
+.act-type-btn .aico{font-size:1.4rem;display:block;margin-bottom:4px;}
+.act-type-btn .albl{font-size:0.78rem;color:var(--ink-light);}
+.act-type-btn.selected{border-color:var(--blue);background:var(--blue-bg);}
+.act-type-btn.selected .albl{color:var(--blue);font-weight:500;}
 
-  /* Log entries */
-  .entry{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;position:relative;overflow:hidden;}
-  .entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sage);}
-  .entry.se::before{background:var(--rose);}
-  .entry-time{font-size:0.75rem;color:var(--ink-muted);margin-bottom:4px;font-weight:500;}
-  .entry-title{font-weight:500;font-size:0.95rem;color:var(--ink);margin-bottom:4px;}
-  .entry-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
-  .tag{padding:3px 10px;border-radius:50px;font-size:0.72rem;font-weight:500;}
-  .tf{background:var(--sage-bg);color:var(--sage);}
-  .ts{background:var(--amber-bg);color:var(--amber);}
-  .entry-del{position:absolute;right:12px;top:12px;background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:1rem;padding:4px;opacity:0.5;}
-  .entry-del:hover{opacity:1;color:var(--rose);}
+/* Recipe list */
+.recipe-item{background:white;border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.recipe-name{font-weight:500;font-size:0.92rem;}
+.recipe-ings{font-size:0.76rem;color:var(--ink-muted);margin-top:3px;}
+.r-actions{display:flex;gap:5px;flex-shrink:0;}
+.r-actions button{background:none;border:1.5px solid var(--border);border-radius:8px;padding:5px 9px;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.r-actions .use-btn{background:var(--sage);color:white;border-color:var(--sage);}
+.r-actions .del-btn{color:var(--rose);}
 
-  .empty-state{text-align:center;padding:40px 20px;color:var(--ink-muted);}
-  .empty-state .ei{font-size:2.5rem;margin-bottom:12px;}
-  .empty-state p{font-size:0.9rem;line-height:1.6;}
+/* Log entries */
+.entry{background:white;border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:9px;position:relative;overflow:hidden;}
+.entry::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sage);}
+.entry.se::before{background:var(--rose);}
+.entry.ae::before{background:var(--blue);}
+.entry-time{font-size:0.73rem;color:var(--ink-muted);margin-bottom:3px;font-weight:500;}
+.entry-title{font-weight:500;font-size:0.92rem;color:var(--ink);margin-bottom:3px;}
+.entry-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.tag{padding:2px 9px;border-radius:50px;font-size:0.7rem;font-weight:500;}
+.tf{background:var(--sage-bg);color:var(--sage);}
+.ts{background:var(--amber-bg);color:var(--amber);}
+.ta{background:var(--blue-bg);color:var(--blue);}
+.entry-del{position:absolute;right:11px;top:11px;background:none;border:none;color:var(--ink-muted);cursor:pointer;font-size:0.95rem;padding:4px;opacity:0.45;}
+.entry-del:hover{opacity:1;color:var(--rose);}
 
-  .bar-wrap{margin-bottom:14px;}
-  .bar-label{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:6px;color:var(--ink-light);}
-  .bar-bg{background:var(--border);border-radius:4px;height:10px;overflow:hidden;}
-  .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--sage),var(--rose));transition:width 0.6s ease;}
+.empty-state{text-align:center;padding:36px 20px;color:var(--ink-muted);}
+.empty-state .ei{font-size:2.2rem;margin-bottom:10px;}
+.empty-state p{font-size:0.88rem;line-height:1.6;}
 
-  .sl{font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:10px;margin-top:4px;}
-  .info-box{background:var(--sage-bg);border:1px solid var(--sage-light);border-radius:10px;padding:12px 14px;font-size:0.82rem;color:var(--ink-light);line-height:1.6;margin-bottom:16px;}
-  .pwa-box{background:var(--amber-bg);border:1px solid #F6D28A;border-radius:10px;padding:14px 16px;font-size:0.83rem;color:var(--ink-light);line-height:1.7;margin-bottom:16px;}
-  .pwa-box strong{color:var(--amber);}
-  .step{margin-bottom:6px;padding-left:4px;}
+.bar-wrap{margin-bottom:12px;}
+.bar-label{display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:5px;color:var(--ink-light);}
+.bar-bg{background:var(--border);border-radius:4px;height:9px;overflow:hidden;}
+.bar-fill{height:9px;border-radius:4px;background:linear-gradient(90deg,var(--sage),var(--rose));transition:width 0.6s ease;}
+.bar-fill.blue{background:linear-gradient(90deg,var(--blue),var(--sage));}
 
-  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:white;padding:12px 24px;border-radius:50px;font-size:0.85rem;font-weight:500;z-index:999;transition:transform 0.3s ease;pointer-events:none;white-space:nowrap;}
-  .toast.show{transform:translateX(-50%) translateY(0);}
+.sl{font-size:0.7rem;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-muted);margin-bottom:9px;margin-top:2px;}
+.info-box{background:var(--sage-bg);border:1px solid var(--sage-light);border-radius:10px;padding:11px 13px;font-size:0.8rem;color:var(--ink-light);line-height:1.6;margin-bottom:14px;}
+.warn-box{background:var(--amber-bg);border:1px solid #F6D28A;border-radius:10px;padding:11px 13px;font-size:0.8rem;color:var(--ink-light);line-height:1.6;margin-bottom:14px;}
+.warn-box strong{color:var(--amber);}
 
-  .ai-result{background:white;border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:12px;font-size:0.9rem;line-height:1.7;color:var(--ink-light);}
-  .ai-result h4{font-family:'Playfair Display',serif;color:var(--ink);margin-bottom:8px;font-size:1rem;}
-  .ld::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
-  @keyframes dots{0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:white;padding:11px 22px;border-radius:50px;font-size:0.83rem;font-weight:500;z-index:999;transition:transform 0.3s ease;pointer-events:none;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 
-  .date-header{font-family:'Playfair Display',serif;font-size:0.9rem;color:var(--ink-muted);margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.ai-result{background:white;border:1px solid var(--border);border-radius:12px;padding:15px;margin-top:11px;font-size:0.88rem;line-height:1.75;color:var(--ink-light);}
+.ai-result h4{font-family:'Playfair Display',serif;color:var(--ink);margin-bottom:8px;font-size:0.98rem;}
+.ld::after{content:'';animation:dots 1.2s steps(4,end) infinite;}
+@keyframes dots{0%,20%{content:''}40%{content:'.'}60%{content:'..'}80%,100%{content:'...'}}
 
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end;}
-  .modal-overlay.open{display:flex;}
-  .modal{background:var(--warm-white);border-radius:20px 20px 0 0;padding:24px 20px 44px;width:100%;max-width:600px;margin:0 auto;max-height:85vh;overflow-y:auto;}
-  .modal-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:16px;}
-  .modal-close{float:right;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--ink-muted);margin-top:-4px;}
+.date-header{font-family:'Playfair Display',serif;font-size:0.88rem;color:var(--ink-muted);margin:14px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:flex-end;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--warm-white);border-radius:20px 20px 0 0;padding:22px 18px 44px;width:100%;max-width:600px;margin:0 auto;max-height:88vh;overflow-y:auto;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.08rem;margin-bottom:14px;}
+.modal-close{float:right;background:none;border:none;font-size:1.25rem;cursor:pointer;color:var(--ink-muted);margin-top:-3px;}
+
+.window-btns{display:flex;gap:6px;margin-bottom:13px;}
+.window-btn{flex:1;padding:9px 5px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.78rem;cursor:pointer;background:white;color:var(--ink-light);transition:all 0.15s;text-align:center;}
+.window-btn.active{background:var(--ink);color:white;border-color:var(--ink);}
+
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px;}
+.stat-box{background:white;border:1px solid var(--border);border-radius:12px;padding:13px 10px;text-align:center;}
+.stat-num{font-size:1.6rem;font-weight:700;color:var(--ink);}
+.stat-lbl{font-size:0.7rem;color:var(--ink-muted);margin-top:2px;}
+
+.divider{height:1px;background:var(--border);margin:14px 0;}
 </style>
 </head>
 <body>
@@ -133,23 +162,25 @@
     <h1>Matdagbok</h1>
     <div class="sub" id="entry-count">Ingen oppføringer ennå</div>
   </div>
-  <span style="font-size:1.4rem">🌿</span>
+  <span style="font-size:1.3rem">🌿</span>
 </header>
 
 <div class="tabs">
   <div class="tab active" onclick="showPage('log')"><span class="ti">🍽️</span>Mat</div>
   <div class="tab" onclick="showPage('symptom')"><span class="ti">🩺</span>Symptom</div>
+  <div class="tab" onclick="showPage('activity')"><span class="ti">🏃</span>Aktivitet</div>
   <div class="tab" onclick="showPage('history')"><span class="ti">📋</span>Logg</div>
   <div class="tab" onclick="showPage('analysis')"><span class="ti">🔍</span>Analyse</div>
   <div class="tab" onclick="showPage('recipes')"><span class="ti">📖</span>Retter</div>
+  <div class="tab" onclick="showPage('settings')"><span class="ti">⚙️</span>Data</div>
 </div>
 
-<!-- ══ MAT ══ -->
+<!-- ══════════ MAT ══════════ -->
 <div class="page active" id="page-log">
   <div class="card">
     <div class="card-title">🍽️ Legg til måltid</div>
 
-    <div id="qp-wrap" style="display:none;margin-bottom:14px;">
+    <div id="qp-wrap" style="display:none;margin-bottom:13px;">
       <label>Velg lagret rett</label>
       <div class="chips" id="qp-chips"></div>
     </div>
@@ -159,9 +190,9 @@
       <div><label>Tidspunkt</label><input type="time" id="food-time"></div>
     </div>
 
-    <label>Navn på rett / måltid</label>
+    <label>Navn på rett / måltid <span style="font-weight:300;text-transform:none;font-size:0.72rem;">(valgfritt hvis kun én ingrediens)</span></label>
     <input type="text" id="food-name" placeholder="F.eks. havregrøt med melk…" oninput="suggestFoods(this.value)">
-    <div id="food-sug" class="chips" style="margin-top:-8px;margin-bottom:10px;"></div>
+    <div id="food-sug" class="chips" style="margin-top:-7px;margin-bottom:9px;"></div>
 
     <label>Måltidstype</label>
     <div class="chips" id="meal-chips">
@@ -177,23 +208,10 @@
       <div class="ing-title">🧩 Ingredienser i dette måltidet</div>
       <div class="ing-tags" id="ing-tags"></div>
       <div class="ing-add-row">
-        <input type="text" id="ing-inp" placeholder="Skriv ingrediens og trykk +" onkeydown="if(event.key==='Enter'){addIng();event.preventDefault()}">
+        <input type="text" id="ing-inp" placeholder="Skriv og trykk +" onkeydown="if(event.key==='Enter'){addIng();event.preventDefault()}">
         <button class="ing-add-btn" onclick="addIng()">+ Legg til</button>
       </div>
-      <div class="preset-chips">
-        <div class="chip" onclick="addIngV('🥛 Melk')">🥛 Melk</div>
-        <div class="chip" onclick="addIngV('🌾 Gluten')">🌾 Gluten</div>
-        <div class="chip" onclick="addIngV('🥚 Egg')">🥚 Egg</div>
-        <div class="chip" onclick="addIngV('🥜 Nøtter')">🥜 Nøtter</div>
-        <div class="chip" onclick="addIngV('🐟 Fisk')">🐟 Fisk</div>
-        <div class="chip" onclick="addIngV('🌶️ Krydret')">🌶️ Krydret</div>
-        <div class="chip" onclick="addIngV('🍺 Alkohol')">🍺 Alkohol</div>
-        <div class="chip" onclick="addIngV('☕ Koffein')">☕ Koffein</div>
-        <div class="chip" onclick="addIngV('🧅 Løk')">🧅 Løk</div>
-        <div class="chip" onclick="addIngV('🧄 Hvitløk')">🧄 Hvitløk</div>
-        <div class="chip" onclick="addIngV('🍅 Tomat')">🍅 Tomat</div>
-        <div class="chip" onclick="addIngV('🫘 Belgfrukter')">🫘 Belgfrukter</div>
-      </div>
+      <div class="preset-chips" id="preset-chips"></div>
     </div>
 
     <label>Notater</label>
@@ -204,7 +222,7 @@
   </div>
 </div>
 
-<!-- ══ SYMPTOM ══ -->
+<!-- ══════════ SYMPTOM ══════════ -->
 <div class="page" id="page-symptom">
   <div class="card">
     <div class="card-title">🩺 Legg til symptom</div>
@@ -231,78 +249,207 @@
       <input type="range" id="severity" min="1" max="10" value="3" oninput="updateSlider(this)" style="--val:20%">
       <div class="slider-labels"><span>1 – Mild</span><span id="sev-val">3</span><span>10 – Alvorlig</span></div>
     </div>
-    <label>Tid etter siste måltid</label>
-    <select id="sym-delay">
-      <option value="">Velg…</option>
-      <option value="under30">Under 30 min</option>
-      <option value="30-60">30–60 min</option>
-      <option value="1-2t">1–2 timer</option>
-      <option value="2-4t">2–4 timer</option>
-      <option value="4t+">Mer enn 4 timer</option>
-    </select>
-    <label>Notater</label>
+    <label>Notater (når startet, hva du tror, etc.)</label>
     <textarea id="sym-notes" placeholder="Beskriv symptomet nærmere…"></textarea>
     <button class="btn btn-primary" onclick="saveSymptom()">✓ Lagre symptom</button>
   </div>
 </div>
 
-<!-- ══ HISTORIKK ══ -->
-<div class="page" id="page-history">
-  <div id="history-list">
-    <div class="empty-state"><div class="ei">📖</div><p>Loggen din er tom.<br>Begynn med å registrere et måltid!</p></div>
+<!-- ══════════ AKTIVITET ══════════ -->
+<div class="page" id="page-activity">
+  <div class="card">
+    <div class="card-title">🏃 Logg aktivitet</div>
+
+    <div class="row-2">
+      <div><label>Dato</label><input type="date" id="act-date"></div>
+      <div><label>Tidspunkt</label><input type="time" id="act-time"></div>
+    </div>
+
+    <label>Type aktivitet</label>
+    <div class="act-type-grid" id="act-type-grid">
+      <div class="act-type-btn" onclick="selectActType(this,'fasting')">
+        <span class="aico">⏱️</span><span class="albl">Fasting</span>
+      </div>
+      <div class="act-type-btn" onclick="selectActType(this,'walk')">
+        <span class="aico">🚶</span><span class="albl">Gåtur</span>
+      </div>
+      <div class="act-type-btn" onclick="selectActType(this,'run')">
+        <span class="aico">🏃</span><span class="albl">Joggetur</span>
+      </div>
+      <div class="act-type-btn" onclick="selectActType(this,'redlight')">
+        <span class="aico">🔴</span><span class="albl">Rødlysbehandling</span>
+      </div>
+      <div class="act-type-btn" onclick="selectActType(this,'sleep')">
+        <span class="aico">😴</span><span class="albl">Søvn</span>
+      </div>
+      <div class="act-type-btn" onclick="selectActType(this,'other')">
+        <span class="aico">✨</span><span class="albl">Annet</span>
+      </div>
+    </div>
+
+    <!-- Dynamic fields per type -->
+    <div id="act-fields-fasting" class="act-fields" style="display:none;">
+      <label>Antall timer fastet</label>
+      <input type="number" id="act-fasting-hours" placeholder="F.eks. 16" min="1" max="120">
+      <label>Type fasting</label>
+      <div class="chips">
+        <div class="chip ac" onclick="toggleChip(this,'act-fast-type')">16:8</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-fast-type')">18:6</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-fast-type')">24t</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-fast-type')">OMAD</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-fast-type')">Annet</div>
+      </div>
+    </div>
+
+    <div id="act-fields-walk" class="act-fields" style="display:none;">
+      <label>Varighet (minutter)</label>
+      <input type="number" id="act-walk-min" placeholder="F.eks. 45" min="1">
+      <label>Intensitet</label>
+      <div class="chips">
+        <div class="chip ac" onclick="toggleChip(this,'act-walk-int')">🚶 Rolig</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-walk-int')">🚶‍♂️ Moderat</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-walk-int')">💨 Rask</div>
+      </div>
+    </div>
+
+    <div id="act-fields-run" class="act-fields" style="display:none;">
+      <label>Varighet (minutter)</label>
+      <input type="number" id="act-run-min" placeholder="F.eks. 30" min="1">
+      <label>Intensitet</label>
+      <div class="chips">
+        <div class="chip ac" onclick="toggleChip(this,'act-run-int')">🟢 Lett</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-run-int')">🟡 Moderat</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-run-int')">🔴 Hard</div>
+      </div>
+    </div>
+
+    <div id="act-fields-redlight" class="act-fields" style="display:none;">
+      <label>Varighet (minutter)</label>
+      <input type="number" id="act-red-min" placeholder="F.eks. 20" min="1">
+      <label>Kroppsdel / område</label>
+      <input type="text" id="act-red-area" placeholder="F.eks. mage, rygg…">
+    </div>
+
+    <div id="act-fields-sleep" class="act-fields" style="display:none;">
+      <label>Antall timer søvn</label>
+      <input type="number" id="act-sleep-hours" placeholder="F.eks. 7.5" min="1" max="24" step="0.5">
+      <label>Søvnkvalitet</label>
+      <div class="chips">
+        <div class="chip ac" onclick="toggleChip(this,'act-sleep-q')">😴 Dårlig</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-sleep-q')">😐 OK</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-sleep-q')">😊 God</div>
+        <div class="chip ac" onclick="toggleChip(this,'act-sleep-q')">🌟 Utmerket</div>
+      </div>
+    </div>
+
+    <div id="act-fields-other" class="act-fields" style="display:none;">
+      <label>Beskriv aktiviteten</label>
+      <input type="text" id="act-other-name" placeholder="F.eks. meditasjon, yoga, bading…">
+      <label>Varighet (minutter, valgfritt)</label>
+      <input type="number" id="act-other-min" placeholder="F.eks. 30" min="1">
+    </div>
+
+    <label>Notater</label>
+    <textarea id="act-notes" placeholder="Hvordan følte du deg? Annet å bemerke…"></textarea>
+
+    <button class="btn btn-primary" onclick="saveActivity()">✓ Lagre aktivitet</button>
   </div>
 </div>
 
-<!-- ══ ANALYSE ══ -->
+<!-- ══════════ HISTORIKK ══════════ -->
+<div class="page" id="page-history">
+  <div style="display:flex;gap:8px;margin-bottom:12px;">
+    <button class="chip selected" id="hist-filter-all" onclick="setHistFilter('all',this)">Alle</button>
+    <button class="chip" id="hist-filter-food" onclick="setHistFilter('food',this)">🍽️ Mat</button>
+    <button class="chip" id="hist-filter-symptom" onclick="setHistFilter('symptom',this)">🩺 Symptom</button>
+    <button class="chip" id="hist-filter-activity" onclick="setHistFilter('activity',this)">🏃 Aktivitet</button>
+  </div>
+  <div id="history-list">
+    <div class="empty-state"><div class="ei">📖</div><p>Loggen din er tom.</p></div>
+  </div>
+</div>
+
+<!-- ══════════ ANALYSE ══════════ -->
 <div class="page" id="page-analysis">
-  <div class="info-box">💡 Analysen ser etter mønstre mellom det du spiser og symptomene du opplever. Jo mer data du logger, desto bedre blir innsikten.</div>
+  <div class="info-box">💡 Analysen ser etter mønstre mellom mat, aktivitet og symptomer. Jo mer data, desto bedre innsikt.</div>
+
+  <div class="card">
+    <div class="card-title">⏱️ Analysevindu</div>
+    <p style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:10px;line-height:1.5;">Hvor langt tilbake skal analysen lete etter mulige mat-utløsere? Magesymptomer kan oppstå fra 30 min til 48 timer etter inntak.</p>
+    <div class="window-btns" id="window-btns">
+      <div class="window-btn" onclick="setWindow(4,this)">4t</div>
+      <div class="window-btn active" onclick="setWindow(12,this)">12t</div>
+      <div class="window-btn" onclick="setWindow(24,this)">24t</div>
+      <div class="window-btn" onclick="setWindow(48,this)">48t</div>
+    </div>
+  </div>
+
   <div id="stats-sec"></div>
+
   <div class="card">
     <div class="card-title">🤖 AI-drevet analyse</div>
-    <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:14px;line-height:1.6;">Klikk under for en dypere analyse med konkrete anbefalinger.</p>
+    <p style="font-size:0.83rem;color:var(--ink-muted);margin-bottom:13px;line-height:1.5;">Klikk under for en dypere analyse som inkluderer mat, aktivitet og livsstil.</p>
     <button class="btn btn-primary" onclick="runAI()" id="ai-btn">✨ Analyser mine data</button>
     <div id="ai-result"></div>
   </div>
+
   <div class="card">
-    <div class="card-title">📤 Eksporter data</div>
-    <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:16px;line-height:1.6;">Velg tidsperiode og eksporter logg og analyse.</p>
-    <div class="row-2">
+    <div class="card-title">📤 Eksporter rapport</div>
+    <div class="row-2" style="margin-bottom:8px;">
       <div><label>Fra dato</label><input type="date" id="exp-from"></div>
       <div><label>Til dato</label><input type="date" id="exp-to"></div>
     </div>
-    <div style="display:flex;gap:8px;margin-top:4px;">
-      <button class="btn btn-secondary" style="margin-top:0;flex:1;" onclick="setExpRange('week')">Siste uke</button>
-      <button class="btn btn-secondary" style="margin-top:0;flex:1;" onclick="setExpRange('month')">Siste måned</button>
-      <button class="btn btn-secondary" style="margin-top:0;flex:1;" onclick="setExpRange('all')">All tid</button>
+    <div class="row-3" style="margin-bottom:13px;">
+      <button class="btn btn-secondary" style="margin-top:0;padding:9px 4px;font-size:0.78rem;" onclick="setExpRange('week')">Siste uke</button>
+      <button class="btn btn-secondary" style="margin-top:0;padding:9px 4px;font-size:0.78rem;" onclick="setExpRange('month')">Siste måned</button>
+      <button class="btn btn-secondary" style="margin-top:0;padding:9px 4px;font-size:0.78rem;" onclick="setExpRange('all')">All tid</button>
     </div>
-    <div style="height:14px;"></div>
-    <button class="btn btn-primary" onclick="exportCSV()" style="margin-bottom:10px;">📊 Last ned som Excel/CSV</button>
-    <button class="btn btn-secondary" style="margin-top:0;" onclick="exportPrint()">🖨️ Skriv ut / lagre som PDF</button>
-    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
-      <p style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:10px;line-height:1.5;">💾 <strong>Sikkerhetskopi</strong> – eksporter alle data som JSON-fil før du bytter til ny versjon av appen.</p>
-      <button class="btn btn-secondary" style="margin-top:0;border-color:var(--sage);color:var(--sage);" onclick="exportJSON()">💾 Eksporter alle data (JSON)</button>
+    <button class="btn btn-primary" onclick="exportCSV()" style="margin-bottom:9px;">📊 Last ned Excel/CSV</button>
+    <button class="btn btn-secondary" style="margin-top:0;" onclick="exportPrint()">🖨️ Skriv ut / lagre PDF</button>
+  </div>
+</div>
+
+<!-- ══════════ RETTER ══════════ -->
+<div class="page" id="page-recipes">
+  <div class="card">
+    <div class="card-title">📖 Lagrede retter</div>
+    <p style="font-size:0.83rem;color:var(--ink-muted);margin-bottom:13px;line-height:1.5;">Lagre retter med ingredienser. Velg dem raskt fra Mat-fanen – ingrediensene fylles automatisk og kan redigeres.</p>
+    <div id="rec-list">
+      <div class="empty-state" style="padding:16px 0;"><div class="ei" style="font-size:1.7rem">🍳</div><p style="font-size:0.83rem">Ingen retter lagret ennå.</p></div>
     </div>
   </div>
 </div>
 
-<!-- ══ RETTER ══ -->
-<div class="page" id="page-recipes">
-  <div class="pwa-box">
-    <strong>📱 Legg til på iPhone-hjemskjermen:</strong>
-    <div class="step">1. Åpne denne filen i <strong>Safari</strong></div>
-    <div class="step">2. Trykk <strong>Del-ikonet</strong> (firkant med pil opp, nederst)</div>
-    <div class="step">3. Velg <strong>«Legg til på hjemskjerm»</strong></div>
-    <div class="step">4. Gi den et navn og trykk <strong>Legg til</strong></div>
-    Dataene lagres automatisk i Safari og er der neste gang du åpner appen. 🌿
-  </div>
+<!-- ══════════ DATA / INNSTILLINGER ══════════ -->
+<div class="page" id="page-settings">
   <div class="card">
-    <div class="card-title">📖 Lagrede retter</div>
-    <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:14px;line-height:1.6;">
-      Lagre retter med ingredienser her. Velg en rett fra Mat-fanen for å fylle ut ingrediensene automatisk – du kan alltid redigere dem etterpå.
-    </p>
-    <div id="rec-list">
-      <div class="empty-state" style="padding:16px 0;"><div class="ei" style="font-size:1.8rem">🍳</div><p style="font-size:0.85rem">Ingen retter lagret ennå.<br>Gå til Mat → lagre et måltid som rett.</p></div>
+    <div class="card-title">💾 Sikkerhetskopi</div>
+    <p style="font-size:0.83rem;color:var(--ink-muted);margin-bottom:13px;line-height:1.5;">Eksporter alle data som JSON-fil. Bruk denne til å flytte data til ny versjon av appen.</p>
+    <button class="btn btn-green" style="margin-top:0;" onclick="exportJSON()">💾 Eksporter alle data (JSON)</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📥 Importer data</div>
+    <p style="font-size:0.83rem;color:var(--ink-muted);margin-bottom:13px;line-height:1.5;">Importer en tidligere eksportert JSON-sikkerhetskopi. Eksisterende data <strong>slettes ikke</strong> – dataene slås sammen.</p>
+    <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importJSON(this)">
+    <button class="btn btn-blue" style="margin-top:0;" onclick="document.getElementById('import-file').click()">📥 Importer JSON-backup</button>
+    <div id="import-result" style="margin-top:10px;font-size:0.83rem;color:var(--sage);"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📱 Legg til på hjemskjerm</div>
+    <div style="font-size:0.83rem;color:var(--ink-light);line-height:1.7;">
+      <div style="margin-bottom:5px;">1. Åpne appen i <strong>Safari</strong></div>
+      <div style="margin-bottom:5px;">2. Trykk <strong>Del-ikonet</strong> (firkant med pil opp)</div>
+      <div style="margin-bottom:5px;">3. Velg <strong>«Legg til på hjemskjerm»</strong></div>
+      <div>4. Trykk <strong>Legg til</strong> ✓</div>
     </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--rose);">🗑️ Slett alle data</div>
+    <p style="font-size:0.83rem;color:var(--ink-muted);margin-bottom:13px;line-height:1.5;">Dette sletter all loggdata permanent. Eksporter JSON-backup først!</p>
+    <button class="btn btn-secondary" style="margin-top:0;color:var(--rose);border-color:var(--rose);" onclick="deleteAllData()">🗑️ Slett alle data</button>
   </div>
 </div>
 
@@ -313,7 +460,7 @@
     <div class="modal-title">📖 Lagre som rett</div>
     <label>Navn på retten</label>
     <input type="text" id="rec-name-inp" placeholder="F.eks. Havregrøt med bær…">
-    <p style="font-size:0.82rem;color:var(--ink-muted);margin-bottom:14px;">Ingrediensene du har lagt til tas med automatisk.</p>
+    <p style="font-size:0.8rem;color:var(--ink-muted);margin-bottom:13px;">Ingrediensene du har lagt til tas med automatisk.</p>
     <button class="btn btn-primary" onclick="saveRecipe()">💾 Lagre rett</button>
   </div>
 </div>
@@ -341,50 +488,121 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
 let entries  = JSON.parse(localStorage.getItem('mb_entries')  || '[]');
 let recipes  = JSON.parse(localStorage.getItem('mb_recipes')  || '[]');
 let curIngs  = [];
 let editIngs = [];
+let selectedActType = null;
+let analysisWindow  = 12; // hours
+let histFilter = 'all';
 
-// ── INIT ──
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
 function init() {
   const now=new Date(), pad=n=>String(n).padStart(2,'0');
   const today=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
   const time=`${pad(now.getHours())}:${pad(now.getMinutes())}`;
-  ['food-date','sym-date','exp-to'].forEach(id=>{ const el=document.getElementById(id); if(el&&!el.value) el.value=today; });
-  const expFrom=document.getElementById('exp-from'); if(expFrom&&!expFrom.value){const f=new Date(now);f.setMonth(f.getMonth()-1);expFrom.value=`${f.getFullYear()}-${pad(f.getMonth()+1)}-${pad(f.getDate())}`; }
-  ['food-time','sym-time'].forEach(id=>{ const el=document.getElementById(id); if(el&&!el.value) el.value=time; });
-  renderIngTags(); renderQP(); updateHeader();
+  ['food-date','sym-date','act-date','exp-to'].forEach(id=>{
+    const el=document.getElementById(id); if(el&&!el.value) el.value=today;
+  });
+  ['food-time','sym-time','act-time'].forEach(id=>{
+    const el=document.getElementById(id); if(el&&!el.value) el.value=time;
+  });
+  const expFrom=document.getElementById('exp-from');
+  if(expFrom&&!expFrom.value){const f=new Date(now);f.setMonth(f.getMonth()-1);expFrom.value=`${f.getFullYear()}-${pad(f.getMonth()+1)}-${pad(f.getDate())}`;}
+  renderIngTags();
+  renderPresets();
+  renderQP();
+  updateHeader();
 }
 
-// ── TABS ──
+// ═══════════════════════════════════════════════════
+// TABS & FILTERS
+// ═══════════════════════════════════════════════════
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
-  ['log','symptom','history','analysis','recipes'].forEach((n,i)=>{ if(n===id) document.querySelectorAll('.tab')[i].classList.add('active'); });
+  ['log','symptom','activity','history','analysis','recipes','settings'].forEach((n,i)=>{
+    if(n===id) document.querySelectorAll('.tab')[i].classList.add('active');
+  });
   if(id==='history') renderHistory();
   if(id==='analysis') renderAnalysis();
   if(id==='recipes') renderRecList();
 }
 
-// ── CHIPS ──
+function setHistFilter(f, el) {
+  histFilter=f;
+  document.querySelectorAll('#page-history .chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  renderHistory();
+}
+
+// ═══════════════════════════════════════════════════
+// CHIPS
+// ═══════════════════════════════════════════════════
 function toggleChip(el,g) {
   if(g==='meal') el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
   el.classList.toggle('selected');
 }
-function getSelChips(id) { return [...document.querySelectorAll(`#${id} .chip.selected`)].map(c=>c.textContent.trim()); }
+function getSelChips(id) {
+  return [...document.querySelectorAll(`#${id} .chip.selected`)].map(c=>c.textContent.trim());
+}
+function getSelChipsInParent(parent, cls) {
+  return [...parent.querySelectorAll(`.${cls}.selected`)].map(c=>c.textContent.trim());
+}
 
-// ── SLIDER ──
+// ═══════════════════════════════════════════════════
+// SLIDER
+// ═══════════════════════════════════════════════════
 function updateSlider(el) {
   el.style.setProperty('--val',((el.value-1)/9*100)+'%');
   document.getElementById('sev-val').textContent=el.value;
 }
 
-// ── INGREDIENT EDITOR (food form) ──
+// ═══════════════════════════════════════════════════
+// INGREDIENT EDITOR
+// ═══════════════════════════════════════════════════
+const DEFAULT_PRESETS = ['🥛 Melk','🌾 Gluten','🥚 Egg','🥜 Nøtter','🐟 Fisk','🌶️ Krydret','🍺 Alkohol','☕ Koffein','🧅 Løk','🧄 Hvitløk','🍅 Tomat','🫘 Belgfrukter'];
+
+function getIngFrequency() {
+  const freq = {};
+  entries.filter(e=>e.type==='food').forEach(e=>{
+    (e.ingredients||[]).forEach(ing=>{
+      const key = ing.replace(/^[\p{Emoji}\s]+/u,'').trim();
+      freq[ing] = (freq[ing]||0)+1;
+    });
+  });
+  return freq;
+}
+
+function renderPresets() {
+  const wrap = document.getElementById('preset-chips');
+  const freq = getIngFrequency();
+  // Start with defaults, then add user ingredients sorted by frequency
+  const userIngs = Object.entries(freq)
+    .filter(([k])=>!DEFAULT_PRESETS.includes(k))
+    .sort((a,b)=>b[1]-a[1])
+    .map(([k])=>k);
+  // Show defaults + top user ingredients (up to 16 total)
+  const allPresets = [...DEFAULT_PRESETS, ...userIngs].slice(0,16);
+  wrap.innerHTML = allPresets.map(ing=>{
+    const count = freq[ing]||0;
+    const badge = count>=3 ? `<span class="freq-badge">${count}x</span>` : '';
+    return `<div class="chip" onclick="addIngV('${ing.replace(/'/g,"\\'")}')">
+      ${ing}${badge}
+    </div>`;
+  }).join('');
+}
+
 function renderIngTags() {
-  document.getElementById('ing-tags').innerHTML=curIngs.map((ing,i)=>
-    `<div class="ing-tag">${ing}<button onclick="rmIng(${i})">✕</button></div>`).join('');
+  document.getElementById('ing-tags').innerHTML = curIngs.map((ing,i)=>
+    `<div class="ing-tag">${ing}<button onclick="rmIng(${i})">✕</button></div>`
+  ).join('');
 }
 function addIng() {
   const inp=document.getElementById('ing-inp'), v=inp.value.trim();
@@ -394,67 +612,363 @@ function addIng() {
 function addIngV(v) { if(!curIngs.includes(v)){curIngs.push(v);renderIngTags();} }
 function rmIng(i) { curIngs.splice(i,1);renderIngTags(); }
 
-// ── INGREDIENT EDITOR (edit modal) ──
+// Edit modal ing
+let editIngs2 = [];
 function renderEditIngTags() {
-  document.getElementById('edit-ing-tags').innerHTML=editIngs.map((ing,i)=>
+  document.getElementById('edit-ing-tags').innerHTML=editIngs2.map((ing,i)=>
     `<div class="ing-tag">${ing}<button onclick="rmEditIng(${i})">✕</button></div>`).join('');
 }
 function addEditIng() {
-  const inp=document.getElementById('edit-ing-inp'), v=inp.value.trim();
-  if(v&&!editIngs.includes(v)){editIngs.push(v);renderEditIngTags();}
+  const inp=document.getElementById('edit-ing-inp'),v=inp.value.trim();
+  if(v&&!editIngs2.includes(v)){editIngs2.push(v);renderEditIngTags();}
   inp.value='';
 }
-function rmEditIng(i) { editIngs.splice(i,1);renderEditIngTags(); }
+function rmEditIng(i){editIngs2.splice(i,1);renderEditIngTags();}
 
-// ── SUGGEST ──
+// ═══════════════════════════════════════════════════
+// FOOD SUGGESTIONS
+// ═══════════════════════════════════════════════════
 const cFoods=['Havregrøt','Brød','Pasta','Ris','Laks','Kylling','Egg','Yoghurt','Melk','Ost','Eple','Banan','Salat','Tomat','Gulrot','Brokkoli','Linser','Bønner','Kaffe','Te','Juice','Smoothie'];
 function suggestFoods(val) {
   const w=document.getElementById('food-sug');
   if(!val||val.length<2){w.innerHTML='';return;}
   const all=[...new Set([...cFoods,...recipes.map(r=>r.name)])];
   const m=all.filter(f=>f.toLowerCase().includes(val.toLowerCase())).slice(0,5);
-  w.innerHTML=m.map(f=>`<div class="chip" onclick="document.getElementById('food-name').value='${f}';document.getElementById('food-sug').innerHTML=''">${f}</div>`).join('');
+  w.innerHTML=m.map(f=>`<div class="chip" onclick="document.getElementById('food-name').value='${f.replace(/'/g,"\\'")}';document.getElementById('food-sug').innerHTML=''">${f}</div>`).join('');
 }
 
-// ── QUICK PICK ──
+// ═══════════════════════════════════════════════════
+// RECIPE QUICK PICK
+// ═══════════════════════════════════════════════════
 function renderQP() {
   const wrap=document.getElementById('qp-wrap'), chips=document.getElementById('qp-chips');
   if(!recipes.length){wrap.style.display='none';return;}
   wrap.style.display='block';
-  chips.innerHTML=recipes.map(r=>`<div class="chip rc" onclick="loadRec('${r.id}')">🍳 ${r.name}</div>`).join('');
+  chips.innerHTML=recipes.map(r=>`<div class="chip rc" onclick="loadRec(${r.id})">🍳 ${r.name}</div>`).join('');
 }
 function loadRec(id) {
   const r=recipes.find(r=>r.id==id); if(!r)return;
   document.getElementById('food-name').value=r.name;
   curIngs=[...r.ingredients]; renderIngTags();
-  showToast(`«${r.name}» lastet – rediger gjerne ingrediensene`);
+  showToast(`«${r.name}» lastet ✓`);
 }
 
-// ── SAVE FOOD ──
+// ═══════════════════════════════════════════════════
+// SAVE FOOD
+// ═══════════════════════════════════════════════════
 function saveFood() {
-  const name=document.getElementById('food-name').value.trim();
-  if(!name){showToast('Skriv inn hva du spiste');return;}
-  entries.push({id:Date.now(),type:'food',date:document.getElementById('food-date').value,time:document.getElementById('food-time').value,name,meal:getSelChips('meal-chips'),ingredients:[...curIngs],notes:document.getElementById('food-notes').value.trim()});
-  save(); document.getElementById('food-name').value=''; document.getElementById('food-notes').value='';
+  let name = document.getElementById('food-name').value.trim();
+  // Auto-name from single ingredient
+  if(!name && curIngs.length===1) name = curIngs[0];
+  if(!name) { showToast('Skriv inn navn eller legg til ingrediens'); return; }
+  entries.push({
+    id:Date.now(), type:'food',
+    date:document.getElementById('food-date').value,
+    time:document.getElementById('food-time').value,
+    name, meal:getSelChips('meal-chips'),
+    ingredients:[...curIngs],
+    notes:document.getElementById('food-notes').value.trim()
+  });
+  save();
+  document.getElementById('food-name').value='';
+  document.getElementById('food-notes').value='';
   document.querySelectorAll('#meal-chips .chip').forEach(c=>c.classList.remove('selected'));
-  curIngs=[]; renderIngTags(); showToast('Måltid lagret ✓'); init();
+  curIngs=[]; renderIngTags(); renderPresets();
+  showToast('Måltid lagret ✓'); init();
 }
 
-// ── SAVE SYMPTOM ──
+// ═══════════════════════════════════════════════════
+// SAVE SYMPTOM
+// ═══════════════════════════════════════════════════
 function saveSymptom() {
   const syms=getSelChips('sym-chips');
   if(!syms.length){showToast('Velg minst ett symptom');return;}
-  entries.push({id:Date.now(),type:'symptom',date:document.getElementById('sym-date').value,time:document.getElementById('sym-time').value,symptoms:syms,severity:parseInt(document.getElementById('severity').value),delay:document.getElementById('sym-delay').value,notes:document.getElementById('sym-notes').value.trim()});
-  save(); document.getElementById('sym-notes').value=''; document.getElementById('sym-delay').value='';
+  entries.push({
+    id:Date.now(), type:'symptom',
+    date:document.getElementById('sym-date').value,
+    time:document.getElementById('sym-time').value,
+    symptoms:syms,
+    severity:parseInt(document.getElementById('severity').value),
+    notes:document.getElementById('sym-notes').value.trim()
+  });
+  save();
+  document.getElementById('sym-notes').value='';
   document.getElementById('severity').value=3; updateSlider(document.getElementById('severity'));
   document.querySelectorAll('#sym-chips .chip').forEach(c=>c.classList.remove('selected'));
   showToast('Symptom lagret ✓'); init();
 }
 
-function save() { localStorage.setItem('mb_entries',JSON.stringify(entries)); updateHeader(); }
-function delEntry(id) { entries=entries.filter(e=>e.id!==id); save(); renderHistory(); }
+// ═══════════════════════════════════════════════════
+// ACTIVITY
+// ═══════════════════════════════════════════════════
+function selectActType(el, type) {
+  document.querySelectorAll('.act-type-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedActType = type;
+  document.querySelectorAll('.act-fields').forEach(f=>f.style.display='none');
+  document.getElementById('act-fields-'+type).style.display='block';
+}
 
-// ── RECIPE CRUD ──
+function saveActivity() {
+  if(!selectedActType){showToast('Velg type aktivitet');return;}
+  const base = {
+    id:Date.now(), type:'activity',
+    date:document.getElementById('act-date').value,
+    time:document.getElementById('act-time').value,
+    actType:selectedActType,
+    notes:document.getElementById('act-notes').value.trim()
+  };
+  // Collect type-specific fields
+  if(selectedActType==='fasting') {
+    base.hours = parseFloat(document.getElementById('act-fasting-hours').value)||null;
+    base.fastType = getSelChips('act-fast-type').join('');
+  } else if(selectedActType==='walk') {
+    base.minutes = parseInt(document.getElementById('act-walk-min').value)||null;
+    base.intensity = getSelChips('act-walk-int').join('');
+  } else if(selectedActType==='run') {
+    base.minutes = parseInt(document.getElementById('act-run-min').value)||null;
+    base.intensity = getSelChips('act-run-int').join('');
+  } else if(selectedActType==='redlight') {
+    base.minutes = parseInt(document.getElementById('act-red-min').value)||null;
+    base.area = document.getElementById('act-red-area').value.trim();
+  } else if(selectedActType==='sleep') {
+    base.hours = parseFloat(document.getElementById('act-sleep-hours').value)||null;
+    base.quality = getSelChips('act-sleep-q').join('');
+  } else if(selectedActType==='other') {
+    base.name = document.getElementById('act-other-name').value.trim();
+    base.minutes = parseInt(document.getElementById('act-other-min').value)||null;
+    if(!base.name){showToast('Beskriv aktiviteten');return;}
+  }
+  entries.push(base);
+  save();
+  // Reset
+  document.getElementById('act-notes').value='';
+  document.querySelectorAll('.act-type-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.act-fields').forEach(f=>f.style.display='none');
+  document.querySelectorAll('.act-fields input[type="number"], .act-fields input[type="text"]').forEach(i=>i.value='');
+  document.querySelectorAll('.act-fields .chip').forEach(c=>c.classList.remove('selected'));
+  selectedActType=null;
+  showToast('Aktivitet lagret ✓'); init();
+}
+
+function actLabel(e) {
+  const icons={'fasting':'⏱️','walk':'🚶','run':'🏃','redlight':'🔴','sleep':'😴','other':'✨'};
+  const names={'fasting':'Fasting','walk':'Gåtur','run':'Joggetur','redlight':'Rødlysbehandling','sleep':'Søvn','other':e.name||'Aktivitet'};
+  let detail='';
+  if(e.hours) detail=`${e.hours}t`;
+  else if(e.minutes) detail=`${e.minutes} min`;
+  if(e.intensity) detail+=(detail?' · ':'')+e.intensity;
+  if(e.quality) detail+=(detail?' · ':'')+e.quality;
+  if(e.fastType) detail+=(detail?' · ':'')+e.fastType;
+  if(e.area) detail+=(detail?' · ':'')+e.area;
+  return {icon:icons[e.actType]||'✨', name:names[e.actType]||'Aktivitet', detail};
+}
+
+// ═══════════════════════════════════════════════════
+// PERSIST
+// ═══════════════════════════════════════════════════
+function save() { localStorage.setItem('mb_entries',JSON.stringify(entries)); updateHeader(); }
+
+function deleteEntry(id) { entries=entries.filter(e=>e.id!==id); save(); renderHistory(); }
+
+// ═══════════════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════════════
+function renderHistory() {
+  const list=document.getElementById('history-list');
+  let filtered = histFilter==='all' ? entries : entries.filter(e=>e.type===histFilter);
+  if(!filtered.length){list.innerHTML=`<div class="empty-state"><div class="ei">📖</div><p>Ingen oppføringer her ennå.</p></div>`;return;}
+  const sorted=[...filtered].sort((a,b)=>new Date(b.date+'T'+(b.time||'00:00'))-new Date(a.date+'T'+(a.time||'00:00')));
+  let html='', lastDate='';
+  for(const e of sorted){
+    if(e.date!==lastDate){html+=`<div class="date-header">${fmtDate(e.date)}</div>`;lastDate=e.date;}
+    if(e.type==='food'){
+      html+=`<div class="entry">
+        <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
+        <div class="entry-time">🕐 ${e.time}${e.meal?.length?' · '+e.meal.join(', '):''}</div>
+        <div class="entry-title">🍽️ ${e.name}</div>
+        <div class="entry-tags">${(e.ingredients||[]).map(i=>`<span class="tag tf">${i}</span>`).join('')}</div>
+        ${e.notes?`<div style="font-size:0.78rem;color:var(--ink-muted);margin-top:5px">${e.notes}</div>`:''}
+      </div>`;
+    } else if(e.type==='symptom'){
+      html+=`<div class="entry se">
+        <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
+        <div class="entry-time">🕐 ${e.time}</div>
+        <div class="entry-title">🩺 ${e.symptoms?.join(', ')}</div>
+        <div class="entry-tags"><span class="tag ts">Alvorlighet: ${e.severity}/10</span></div>
+        ${e.notes?`<div style="font-size:0.78rem;color:var(--ink-muted);margin-top:5px">${e.notes}</div>`:''}
+      </div>`;
+    } else if(e.type==='activity'){
+      const {icon,name,detail}=actLabel(e);
+      html+=`<div class="entry ae">
+        <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
+        <div class="entry-time">🕐 ${e.time}</div>
+        <div class="entry-title">${icon} ${name}${detail?' – '+detail:''}</div>
+        ${e.notes?`<div style="font-size:0.78rem;color:var(--ink-muted);margin-top:5px">${e.notes}</div>`:''}
+      </div>`;
+    }
+  }
+  list.innerHTML=html;
+}
+
+function fmtDate(d){return d?new Date(d+'T12:00:00').toLocaleDateString('no-NO',{weekday:'long',day:'numeric',month:'long'}):'';}
+
+// ═══════════════════════════════════════════════════
+// ANALYSIS
+// ═══════════════════════════════════════════════════
+function setWindow(h, el) {
+  analysisWindow=h;
+  document.querySelectorAll('.window-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderAnalysis();
+}
+
+function renderAnalysis() {
+  const foods=entries.filter(e=>e.type==='food');
+  const syms=entries.filter(e=>e.type==='symptom');
+  const acts=entries.filter(e=>e.type==='activity');
+  const sec=document.getElementById('stats-sec');
+
+  if(!entries.length){sec.innerHTML=`<div class="empty-state"><div class="ei">📊</div><p>Ingen data ennå.</p></div>`;return;}
+
+  // Stats
+  const avgSev = syms.length ? (syms.reduce((a,s)=>a+s.severity,0)/syms.length).toFixed(1) : '-';
+  let html=`<div class="stat-grid">
+    <div class="stat-box"><div class="stat-num">${foods.length}</div><div class="stat-lbl">Måltider</div></div>
+    <div class="stat-box"><div class="stat-num">${syms.length}</div><div class="stat-lbl">Symptomer</div></div>
+    <div class="stat-box"><div class="stat-num">${acts.length}</div><div class="stat-lbl">Aktiviteter</div></div>
+  </div>`;
+
+  if(foods.length>=2 && syms.length>=1){
+    // Correlation with time-decay weighting
+    const windowMs = analysisWindow * 60 * 60 * 1000;
+    const sc={};
+    for(const s of syms){
+      const sDT=new Date(s.date+'T'+(s.time||'12:00'));
+      const rel=foods.filter(f=>{
+        const diff=sDT-new Date(f.date+'T'+(f.time||'12:00'));
+        return diff>=0 && diff<=windowMs;
+      });
+      for(const f of rel){
+        // Time-decay: closer meals get higher weight
+        const diffH=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/3600000;
+        // Weight: 1.0 at 0h, 0.4 at max window (logarithmic decay)
+        const weight = Math.max(0.3, 1 - (diffH/analysisWindow)*0.6);
+        [f.name,...(f.ingredients||[])].forEach(k=>{
+          if(!sc[k])sc[k]={c:0,t:0};
+          sc[k].c++;
+          sc[k].t+=s.severity*weight;
+        });
+      }
+    }
+    const ranked=Object.entries(sc).map(([k,v])=>({name:k,score:v.t/Math.max(syms.length,1),count:v.c})).sort((a,b)=>b.score-a.score).slice(0,7);
+    if(ranked.length){
+      const maxS=ranked[0].score;
+      html+=`<p class="sl">Mulige mat-utløsere (analysevindu: ${analysisWindow}t)</p><div class="card">`;
+      ranked.forEach(r=>{
+        const p=Math.round((r.score/maxS)*100);
+        const em=r.score>maxS*0.7?'⚠️':r.score>maxS*0.4?'🟡':'🟢';
+        html+=`<div class="bar-wrap"><div class="bar-label"><span>${em} ${r.name}</span><span>${r.count}x</span></div><div class="bar-bg"><div class="bar-fill" style="width:${p}%"></div></div></div>`;
+      });
+      html+=`</div>`;
+    }
+  }
+
+  // Activity correlation
+  if(acts.length>=2 && syms.length>=1){
+    // Days with activity vs avg symptom severity
+    const actDays={};
+    acts.forEach(a=>{if(!actDays[a.date])actDays[a.date]=[];actDays[a.date].push(a.actType);});
+    const symsByDay={};
+    syms.forEach(s=>{if(!symsByDay[s.date])symsByDay[s.date]=[];symsByDay[s.date].push(s.severity);});
+    const actTypes=[...new Set(acts.map(a=>a.actType))];
+    const actStats=[];
+    for(const t of actTypes){
+      const daysWithAct=Object.keys(actDays).filter(d=>actDays[d].includes(t));
+      const daysWithout=Object.keys(symsByDay).filter(d=>!daysWithAct.includes(d));
+      const avgWith=daysWithAct.filter(d=>symsByDay[d]).map(d=>symsByDay[d].reduce((a,b)=>a+b,0)/symsByDay[d].length);
+      const avgWithout=daysWithout.filter(d=>symsByDay[d]).map(d=>symsByDay[d].reduce((a,b)=>a+b,0)/symsByDay[d].length);
+      if(avgWith.length&&avgWithout.length){
+        const mWith=avgWith.reduce((a,b)=>a+b,0)/avgWith.length;
+        const mWithout=avgWithout.reduce((a,b)=>a+b,0)/avgWithout.length;
+        actStats.push({type:t,mWith,mWithout,diff:mWithout-mWith,days:daysWithAct.length});
+      }
+    }
+    if(actStats.length){
+      html+=`<p class="sl" style="margin-top:18px;">Aktivitet og symptomer</p><div class="card">`;
+      const {icon:i1}=actLabel({actType:'x'});
+      actStats.sort((a,b)=>b.diff-a.diff).forEach(a=>{
+        const {icon}=actLabel({actType:a.type});
+        const names={'fasting':'Fasting','walk':'Gåtur','run':'Joggetur','redlight':'Rødlysbehandling','sleep':'Søvn','other':'Annet'};
+        const better=a.diff>0;
+        const sym=better?'📉':'📈';
+        html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:0.88rem">${icon} ${names[a.type]||a.type}</span>
+          <span style="font-size:0.82rem;color:${better?'var(--sage)':'var(--rose)'};">${sym} ${better?'Færre':'Flere'} symptomer (${a.days} dager)</span>
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+  }
+
+  // Symptom frequency
+  const symC={};
+  syms.forEach(s=>(s.symptoms||[]).forEach(sym=>{symC[sym]=(symC[sym]||0)+1;}));
+  const topS=Object.entries(symC).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  if(topS.length){
+    html+=`<p class="sl" style="margin-top:18px;">Hyppigste symptomer</p><div class="card">`;
+    topS.forEach(([sym,cnt])=>{html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)"><span style="font-size:0.88rem">${sym}</span><span style="font-size:0.82rem;color:var(--rose);font-weight:500">${cnt} gang${cnt>1?'er':''}</span></div>`;});
+    html+=`</div>`;
+  }
+
+  sec.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════
+// AI ANALYSIS
+// ═══════════════════════════════════════════════════
+async function runAI() {
+  const foods=entries.filter(e=>e.type==='food');
+  const syms=entries.filter(e=>e.type==='symptom');
+  const acts=entries.filter(e=>e.type==='activity');
+  if(!syms.length){showToast('Logg minst ett symptom først');return;}
+  const btn=document.getElementById('ai-btn'), result=document.getElementById('ai-result');
+  btn.disabled=true; btn.textContent='Analyserer'; btn.classList.add('ld');
+  result.innerHTML=`<div class="ai-result" style="color:var(--ink-muted)">Analyserer dine data<span class="ld"></span></div>`;
+
+  // Summarize for AI (avoid sending too much data)
+  const recentEntries = [...entries].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,120);
+  const prompt=`Du er en ernærings- og fordøyelsesekspert. Analyser denne mat-, aktivitets- og symptomloggen og gi en personlig, konkret analyse på norsk.
+
+ANALYSEVINDU: ${analysisWindow} timer (tid mellom mat og symptom som analyseres)
+ANTALL OPPFØRINGER: ${foods.length} måltider, ${syms.length} symptomer, ${acts.length} aktiviteter
+
+DATA (nyeste først):
+${JSON.stringify(recentEntries, null, 1)}
+
+Gi en analyse med disse delene:
+1. **Sammendrag** – hva ser du i dataene?
+2. **Mulige mat-utløsere** – hvilke matvarer/ingredienser opptrer hyppigst før symptomer?
+3. **Aktivitetens rolle** – ser du at fasting, trening, rødlysbehandling eller søvn påvirker symptomene?
+4. **Mønstre og korrelasjoner** – er det tidspunkter på dagen, kombinasjoner eller andre mønstre?
+5. **Konkrete anbefalinger** – hva bør prøves, unngås eller logges videre?
+
+Vær konkret, personlig og praktisk. Avslutt med en oppmuntrende setning.`;
+
+  try {
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,messages:[{role:"user",content:prompt}]})});
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'Kunne ikke hente analyse.';
+    result.innerHTML=`<div class="ai-result"><h4>🤖 AI-analyse</h4>${text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/^(\d+\. )/gm,'<br><strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
+  } catch(e){
+    result.innerHTML=`<div class="ai-result" style="color:var(--rose)">Noe gikk galt. Prøv igjen.</div>`;
+  }
+  btn.disabled=false; btn.textContent='✨ Analyser mine data'; btn.classList.remove('ld');
+}
+
+// ═══════════════════════════════════════════════════
+// RECIPE CRUD
+// ═══════════════════════════════════════════════════
 function openSaveRecModal() {
   document.getElementById('rec-name-inp').value=document.getElementById('food-name').value;
   document.getElementById('m-save').classList.add('open');
@@ -472,7 +986,7 @@ function openEditRec(id) {
   const r=recipes.find(r=>r.id==id); if(!r)return;
   document.getElementById('edit-rec-id').value=r.id;
   document.getElementById('edit-rec-name').value=r.name;
-  editIngs=[...r.ingredients]; renderEditIngTags();
+  editIngs2=[...r.ingredients]; renderEditIngTags();
   document.getElementById('m-edit').classList.add('open');
 }
 function updateRecipe() {
@@ -480,261 +994,194 @@ function updateRecipe() {
   const name=document.getElementById('edit-rec-name').value.trim();
   if(!name){showToast('Gi retten et navn');return;}
   const idx=recipes.findIndex(r=>r.id==id); if(idx===-1)return;
-  recipes[idx]={id,name,ingredients:[...editIngs]};
+  recipes[idx]={id,name,ingredients:[...editIngs2]};
   localStorage.setItem('mb_recipes',JSON.stringify(recipes));
   renderRecList(); renderQP(); document.getElementById('m-edit').classList.remove('open');
   showToast('Rett oppdatert ✓');
 }
 function delRecipe(id) {
+  if(!confirm('Slette denne retten?')) return;
   recipes=recipes.filter(r=>r.id!=id);
   localStorage.setItem('mb_recipes',JSON.stringify(recipes));
   renderRecList(); renderQP(); showToast('Rett slettet');
 }
 function renderRecList() {
   const list=document.getElementById('rec-list');
-  if(!recipes.length){list.innerHTML=`<div class="empty-state" style="padding:16px 0;"><div class="ei" style="font-size:1.8rem">🍳</div><p style="font-size:0.85rem">Ingen retter lagret ennå.<br>Gå til Mat → lagre et måltid som rett.</p></div>`;return;}
-  list.innerHTML=recipes.map(r=>`<div class="recipe-item"><div><div class="recipe-name">🍳 ${r.name}</div><div class="recipe-ings">${r.ingredients.join(', ')||'Ingen ingredienser'}</div></div><div class="r-actions"><button class="use-btn" onclick="loadRecAndGo('${r.id}')">Bruk</button><button onclick="openEditRec('${r.id}')">✏️</button><button class="del-btn" onclick="delRecipe('${r.id}')">🗑</button></div></div>`).join('');
-}
-function loadRecAndGo(id) { loadRec(id); showPage('log'); }
-
-function closeModal(e) { if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); }
-
-// ── HISTORY ──
-function renderHistory() {
-  const list=document.getElementById('history-list');
-  if(!entries.length){list.innerHTML=`<div class="empty-state"><div class="ei">📖</div><p>Loggen din er tom.</p></div>`;return;}
-  const sorted=[...entries].sort((a,b)=>new Date(b.date+'T'+(b.time||'00:00'))-new Date(a.date+'T'+(a.time||'00:00')));
-  let html='',lastDate='';
-  for(const e of sorted){
-    if(e.date!==lastDate){html+=`<div class="date-header">${fmtDate(e.date)}</div>`;lastDate=e.date;}
-    if(e.type==='food'){
-      html+=`<div class="entry"><button class="entry-del" onclick="delEntry(${e.id})">✕</button><div class="entry-time">🕐 ${e.time}${e.meal?.length?' · '+e.meal.join(', '):''}</div><div class="entry-title">🍽️ ${e.name}</div><div class="entry-tags">${(e.ingredients||[]).map(i=>`<span class="tag tf">${i}</span>`).join('')}</div>${e.notes?`<div style="font-size:0.8rem;color:var(--ink-muted);margin-top:6px">${e.notes}</div>`:''}</div>`;
-    } else {
-      html+=`<div class="entry se"><button class="entry-del" onclick="delEntry(${e.id})">✕</button><div class="entry-time">🕐 ${e.time}${e.delay?' · '+dlbl(e.delay)+' etter mat':''}</div><div class="entry-title">🩺 ${e.symptoms?.join(', ')}</div><div class="entry-tags"><span class="tag ts">Alvorlighet: ${e.severity}/10</span></div>${e.notes?`<div style="font-size:0.8rem;color:var(--ink-muted);margin-top:6px">${e.notes}</div>`:''}</div>`;
-    }
-  }
-  list.innerHTML=html;
-}
-function dlbl(v){return{'under30':'under 30 min','30-60':'30–60 min','1-2t':'1–2 t','2-4t':'2–4 t','4t+':'4+ t'}[v]||v;}
-function fmtDate(d){return d?new Date(d+'T12:00:00').toLocaleDateString('no-NO',{weekday:'long',day:'numeric',month:'long'}):'';}
-
-// ── ANALYSIS ──
-function renderAnalysis() {
-  const foods=entries.filter(e=>e.type==='food'), syms=entries.filter(e=>e.type==='symptom');
-  const sec=document.getElementById('stats-sec');
-  if(foods.length<3||syms.length<2){sec.innerHTML=`<div class="empty-state"><div class="ei">📊</div><p>Du trenger minst <strong>3 måltider</strong> og <strong>2 symptomer</strong>.<br><br>Du har: <strong>${foods.length} måltider</strong> og <strong>${syms.length} symptomer</strong>.</p></div>`;return;}
-  const sc={};
-  for(const s of syms){
-    const sDT=new Date(s.date+'T'+(s.time||'12:00'));
-    const rel=foods.filter(f=>{const d=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/60000;return d>=0&&d<=240;});
-    for(const f of rel) [f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;});
-  }
-  const ranked=Object.entries(sc).map(([k,v])=>({name:k,score:v.t/Math.max(syms.length,1),count:v.c})).sort((a,b)=>b.score-a.score).slice(0,6);
-  const maxS=ranked[0]?.score||1;
-  let html=`<p class="sl">Mulige utløsere</p>`;
-  if(!ranked.length){html+=`<div class="empty-state"><div class="ei">🔍</div><p>Ingen klare mønstre ennå.</p></div>`;}
-  else{
-    html+=`<div class="card">`;
-    ranked.forEach(r=>{const p=Math.round((r.score/maxS)*100),em=r.score>maxS*0.7?'⚠️':r.score>maxS*0.4?'🟡':'🟢';html+=`<div class="bar-wrap"><div class="bar-label"><span>${em} ${r.name}</span><span>${r.count}x</span></div><div class="bar-bg"><div class="bar-fill" style="width:${p}%"></div></div></div>`;});
-    html+=`</div>`;
-  }
-  const symC={};
-  syms.forEach(s=>(s.symptoms||[]).forEach(sym=>{symC[sym]=(symC[sym]||0)+1;}));
-  const topS=Object.entries(symC).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  if(topS.length){
-    html+=`<p class="sl" style="margin-top:20px">Hyppigste symptomer</p><div class="card">`;
-    topS.forEach(([sym,cnt])=>{html+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:0.9rem">${sym}</span><span style="font-size:0.85rem;color:var(--rose);font-weight:500">${cnt} gang${cnt>1?'er':''}</span></div>`;});
-    html+=`</div>`;
-  }
-  sec.innerHTML=html;
+  if(!recipes.length){list.innerHTML=`<div class="empty-state" style="padding:16px 0;"><div class="ei" style="font-size:1.7rem">🍳</div><p style="font-size:0.83rem">Ingen retter lagret ennå.</p></div>`;return;}
+  list.innerHTML=recipes.map(r=>`<div class="recipe-item"><div><div class="recipe-name">🍳 ${r.name}</div><div class="recipe-ings">${r.ingredients.join(', ')||'Ingen ingredienser'}</div></div><div class="r-actions"><button class="use-btn" onclick="loadRec(${r.id});showPage('log')">Bruk</button><button onclick="openEditRec(${r.id})">✏️</button><button class="del-btn" onclick="delRecipe(${r.id})">🗑</button></div></div>`).join('');
 }
 
-// ── AI ──
-async function runAI() {
-  const foods=entries.filter(e=>e.type==='food'), syms=entries.filter(e=>e.type==='symptom');
-  if(foods.length<3||syms.length<2){showToast('Logg mer data først!');return;}
-  const btn=document.getElementById('ai-btn'), result=document.getElementById('ai-result');
-  btn.disabled=true; btn.textContent='Analyserer'; btn.classList.add('ld');
-  result.innerHTML=`<div class="ai-result" style="color:var(--ink-muted)">Analyserer dine data<span class="ld"></span></div>`;
-  const prompt=`Du er en ernærings- og fordøyelsesekspert. Analyser følgende mat- og symptomlogg og gi en grundig, empatisk og personlig analyse på norsk.\n\nDATA:\n${JSON.stringify({matvarer:foods,symptomer:syms},null,2)}\n\nGi en analyse med disse delene:\n1. **Sammendrag** (2-3 setninger)\n2. **Mulige matvare-utløsere** (basert på tidsmønster)\n3. **Anbefalinger** (konkrete, praktiske råd)\n4. **Hva bør logges videre**\n\nVær konkret og personlig på norsk. Avslutt med en oppmuntrende setning.`;
-  try {
-    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
-    const data=await res.json();
-    const text=data.content?.[0]?.text||'Kunne ikke hente analyse.';
-    result.innerHTML=`<div class="ai-result"><h4>🤖 AI-analyse</h4>${text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/^(\d+\. )/gm,'<br><strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
-  }catch(e){result.innerHTML=`<div class="ai-result" style="color:var(--rose)">Noe gikk galt. Prøv igjen.</div>`;}
-  btn.disabled=false; btn.textContent='✨ Analyser mine data'; btn.classList.remove('ld');
-}
+function closeModal(e){if(e.target.classList.contains('modal-overlay'))e.target.classList.remove('open');}
 
-// ── EXPORT ──
+// ═══════════════════════════════════════════════════
+// EXPORT / IMPORT
+// ═══════════════════════════════════════════════════
 function setExpRange(r) {
-  const now=new Date(), pad=n=>String(n).padStart(2,'0');
-  const fmt=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-  const toEl=document.getElementById('exp-to'), fromEl=document.getElementById('exp-from');
-  toEl.value=fmt(now);
-  if(r==='week'){const f=new Date(now);f.setDate(f.getDate()-7);fromEl.value=fmt(f);}
-  else if(r==='month'){const f=new Date(now);f.setMonth(f.getMonth()-1);fromEl.value=fmt(f);}
-  else{fromEl.value='2020-01-01';}
+  const now=new Date(), fmt=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  document.getElementById('exp-to').value=fmt(now);
+  if(r==='week'){const f=new Date(now);f.setDate(f.getDate()-7);document.getElementById('exp-from').value=fmt(f);}
+  else if(r==='month'){const f=new Date(now);f.setMonth(f.getMonth()-1);document.getElementById('exp-from').value=fmt(f);}
+  else{document.getElementById('exp-from').value='2020-01-01';}
 }
 
-function getExpEntries() {
-  const from=document.getElementById('exp-from').value;
-  const to=document.getElementById('exp-to').value;
-  if(!from||!to){showToast('Velg tidsperiode først');return null;}
+function getExpEntries(){
+  const from=document.getElementById('exp-from').value, to=document.getElementById('exp-to').value;
+  if(!from||!to){showToast('Velg tidsperiode');return null;}
   const filtered=entries.filter(e=>e.date>=from&&e.date<=to);
   if(!filtered.length){showToast('Ingen data i valgt periode');return null;}
-  return {filtered, from, to};
+  return{filtered,from,to};
 }
 
-function exportCSV() {
-  const res=getExpEntries(); if(!res)return;
-  const {filtered,from,to}=res;
-
-  // Sheet 1: Matlogg
-  let csv='MATLOGG\n';
-  csv+='Dato,Tidspunkt,Rett,Måltidstype,Ingredienser,Notater\n';
-  filtered.filter(e=>e.type==='food').forEach(e=>{
-    const row=[e.date,e.time||'',e.name,(e.meal||[]).join(' | '),(e.ingredients||[]).join(' | '),(e.notes||'').replace(/,/g,' ')];
-    csv+=row.map(v=>`"${v}"`).join(',')+'\n';
-  });
-
-  csv+='\nSYMPTOMLOGG\n';
-  csv+='Dato,Tidspunkt,Symptomer,Alvorlighet (1-10),Tid etter mat,Notater\n';
-  filtered.filter(e=>e.type==='symptom').forEach(e=>{
-    const row=[e.date,e.time||'',(e.symptoms||[]).join(' | '),e.severity||'',dlbl(e.delay||''),(e.notes||'').replace(/,/g,' ')];
-    csv+=row.map(v=>`"${v}"`).join(',')+'\n';
-  });
-
-  // Simple correlation summary
-  const foods=filtered.filter(e=>e.type==='food');
-  const syms=filtered.filter(e=>e.type==='symptom');
-  if(foods.length&&syms.length){
-    csv+='\nKORRELASJONSSAMMENDRAG\n';
-    csv+='Matvare/Ingrediens,Antall treff før symptom,Score\n';
-    const sc={};
-    syms.forEach(s=>{
-      const sDT=new Date(s.date+'T'+(s.time||'12:00'));
-      foods.filter(f=>{const d=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/60000;return d>=0&&d<=240;})
-        .forEach(f=>[f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;}));
-    });
-    Object.entries(sc).sort((a,b)=>b[1].t-a[1].t).forEach(([k,v])=>{
-      csv+=`"${k}","${v.c}","${(v.t/Math.max(syms.length,1)).toFixed(1)}"\n`;
-    });
-  }
-
-  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+function exportJSON() {
+  const data={version:2,exportDate:new Date().toISOString(),entries,recipes};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href=url; a.download=`matdagbok_${from}_${to}.csv`; a.click();
-  URL.revokeObjectURL(url);
-  showToast('CSV lastet ned ✓');
-}
-
-function exportPrint() {
-  const res=getExpEntries(); if(!res)return;
-  const {filtered,from,to}=res;
-  const foods=filtered.filter(e=>e.type==='food');
-  const syms=filtered.filter(e=>e.type==='symptom');
-
-  // Build correlation
-  const sc={};
-  syms.forEach(s=>{
-    const sDT=new Date(s.date+'T'+(s.time||'12:00'));
-    foods.filter(f=>{const d=(sDT-new Date(f.date+'T'+(f.time||'12:00')))/60000;return d>=0&&d<=240;})
-      .forEach(f=>[f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;}));
-  });
-  const ranked=Object.entries(sc).map(([k,v])=>({name:k,score:v.t/Math.max(syms.length,1),count:v.c})).sort((a,b)=>b.score-a.score).slice(0,8);
-
-  const symC={};
-  syms.forEach(s=>(s.symptoms||[]).forEach(sym=>{symC[sym]=(symC[sym]||0)+1;}));
-
-  const sorted=[...filtered].sort((a,b)=>new Date(a.date+'T'+(a.time||'00:00'))-new Date(b.date+'T'+(b.time||'00:00')));
-
-  let html=`<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8">
-  <title>Matdagbok ${from} – ${to}</title>
-  <style>
-    body{font-family:Georgia,serif;max-width:800px;margin:0 auto;padding:32px;color:#1C1917;font-size:13px;}
-    h1{font-size:2rem;margin-bottom:4px;} .sub{color:#78716C;margin-bottom:32px;font-size:0.85rem;}
-    h2{font-size:1.2rem;margin:28px 0 12px;border-bottom:2px solid #E8E0D5;padding-bottom:6px;}
-    table{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px;}
-    th{background:#1C1917;color:white;padding:8px 10px;text-align:left;}
-    td{padding:7px 10px;border-bottom:1px solid #E8E0D5;vertical-align:top;}
-    tr:nth-child(even) td{background:#FAF7F2;}
-    .badge{display:inline-block;background:#EFF5EE;color:#7D9B76;border-radius:50px;padding:2px 8px;font-size:11px;margin:2px;}
-    .badge.red{background:#FEE2E2;color:#E07070;}
-    .bar-wrap{margin:6px 0;}
-    .bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;}
-    .bar-bg{background:#E8E0D5;border-radius:3px;height:8px;}
-    .bar-fill{height:8px;border-radius:3px;background:linear-gradient(90deg,#7D9B76,#E07070);}
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
-    .stat{background:#FAF7F2;border:1px solid #E8E0D5;border-radius:10px;padding:14px;text-align:center;}
-    .stat-num{font-size:1.8rem;font-weight:700;}
-    .stat-lbl{font-size:0.75rem;color:#78716C;}
-    @media print{body{padding:16px;} button{display:none;}}
-  </style></head><body>
-  <h1>🌿 Matdagbok</h1>
-  <div class="sub">Rapport: ${fmtDate(from)} – ${fmtDate(to)}</div>
-
-  <div class="stats">
-    <div class="stat"><div class="stat-num">${foods.length}</div><div class="stat-lbl">Måltider logget</div></div>
-    <div class="stat"><div class="stat-num">${syms.length}</div><div class="stat-lbl">Symptomer logget</div></div>
-    <div class="stat"><div class="stat-num">${syms.length?Math.round(syms.reduce((a,s)=>a+s.severity,0)/syms.length*10)/10:'-'}</div><div class="stat-lbl">Snitt alvorlighetsgrad</div></div>
-  </div>`;
-
-  if(ranked.length){
-    const maxS=ranked[0].score;
-    html+=`<h2>🔍 Mulige utløsere</h2><table><tr><th>Matvare / Ingrediens</th><th>Treff</th><th>Korrelasjon</th></tr>`;
-    ranked.forEach(r=>{
-      const pct=Math.round((r.score/maxS)*100);
-      const em=r.score>maxS*0.7?'⚠️':r.score>maxS*0.4?'🟡':'🟢';
-      html+=`<tr><td>${em} ${r.name}</td><td>${r.count}x</td><td><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></td></tr>`;
-    });
-    html+=`</table>`;
-  }
-
-  if(Object.keys(symC).length){
-    html+=`<h2>🩺 Hyppigste symptomer</h2><table><tr><th>Symptom</th><th>Antall ganger</th></tr>`;
-    Object.entries(symC).sort((a,b)=>b[1]-a[1]).forEach(([s,c])=>{html+=`<tr><td>${s}</td><td>${c}</td></tr>`;});
-    html+=`</table>`;
-  }
-
-  html+=`<h2>📋 Fullstendig logg</h2><table><tr><th>Dato</th><th>Tid</th><th>Type</th><th>Detaljer</th></tr>`;
-  sorted.forEach(e=>{
-    if(e.type==='food'){
-      const ings=(e.ingredients||[]).map(i=>`<span class="badge">${i}</span>`).join('');
-      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🍽️ Mat</td><td><strong>${e.name}</strong>${e.meal?.length?' · '+e.meal.join(', '):''}${ings?'<br>'+ings:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
-    } else {
-      const slist=(e.symptoms||[]).map(s=>`<span class="badge red">${s}</span>`).join('');
-      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🩺 Symptom</td><td>${slist}<br>Alvorlighet: <strong>${e.severity}/10</strong>${e.delay?' · '+dlbl(e.delay)+' etter mat':''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
-    }
-  });
-  html+=`</table><p style="margin-top:32px;color:#78716C;font-size:11px;text-align:center;">Generert av Matdagbok · ${new Date().toLocaleDateString('no-NO')}</p></body></html>`;
-
-  const w=window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
-  setTimeout(()=>w.print(),600);
-}
-
-// ── JSON EXPORT ──
-function exportJSON() {
-  const data = { version:1, exportDate:new Date().toISOString(), entries:entries, recipes:recipes };
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
   a.href=url; a.download=`matdagbok_backup_${new Date().toISOString().slice(0,10)}.json`; a.click();
   URL.revokeObjectURL(url);
   showToast('JSON-backup lastet ned ✓');
 }
 
-// ── UTILS ──
-function updateHeader() {
-  const f=entries.filter(e=>e.type==='food').length, s=entries.filter(e=>e.type==='symptom').length;
-  document.getElementById('entry-count').textContent=entries.length===0?'Ingen oppføringer ennå':`${f} måltider · ${s} symptomer`;
+function importJSON(input) {
+  const file=input.files[0]; if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try {
+      const data=JSON.parse(e.target.result);
+      const importedEntries=data.entries||[];
+      const importedRecipes=data.recipes||[];
+      // Merge – avoid duplicates by id
+      const existingIds=new Set(entries.map(e=>e.id));
+      const newEntries=importedEntries.filter(e=>!existingIds.has(e.id));
+      const existingRecIds=new Set(recipes.map(r=>r.id));
+      const newRecipes=importedRecipes.filter(r=>!existingRecIds.has(r.id));
+      entries=[...entries,...newEntries];
+      recipes=[...recipes,...newRecipes];
+      save();
+      localStorage.setItem('mb_recipes',JSON.stringify(recipes));
+      renderQP(); renderPresets();
+      const msg=`✓ Importert: ${newEntries.length} oppføringer, ${newRecipes.length} retter`;
+      document.getElementById('import-result').textContent=msg;
+      showToast('Import fullført ✓');
+    } catch(err){
+      document.getElementById('import-result').textContent='❌ Feil: ugyldig JSON-fil';
+    }
+  };
+  reader.readAsText(file);
+  input.value='';
 }
-function showToast(msg) {
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+
+function exportCSV(){
+  const res=getExpEntries(); if(!res)return;
+  const{filtered,from,to}=res;
+  let csv='\uFEFF';
+  csv+='MATLOGG\nDato,Tidspunkt,Rett,Måltidstype,Ingredienser,Notater\n';
+  filtered.filter(e=>e.type==='food').forEach(e=>{
+    csv+=[e.date,e.time||'',e.name,(e.meal||[]).join('|'),(e.ingredients||[]).join('|'),(e.notes||'').replace(/,/g,' ')].map(v=>`"${v}"`).join(',')+'\n';
+  });
+  csv+='\nSYMPTOMLOGG\nDato,Tidspunkt,Symptomer,Alvorlighet,Notater\n';
+  filtered.filter(e=>e.type==='symptom').forEach(e=>{
+    csv+=[e.date,e.time||'',(e.symptoms||[]).join('|'),e.severity||'',(e.notes||'').replace(/,/g,' ')].map(v=>`"${v}"`).join(',')+'\n';
+  });
+  csv+='\nAKTIVITETSLOGG\nDato,Tidspunkt,Type,Detaljer,Notater\n';
+  filtered.filter(e=>e.type==='activity').forEach(e=>{
+    const{name,detail}=actLabel(e);
+    csv+=[e.date,e.time||'',name,detail,(e.notes||'').replace(/,/g,' ')].map(v=>`"${v}"`).join(',')+'\n';
+  });
+  // Correlation
+  const foods=filtered.filter(e=>e.type==='food'), syms=filtered.filter(e=>e.type==='symptom');
+  if(foods.length&&syms.length){
+    const wMs=analysisWindow*3600000, sc={};
+    syms.forEach(s=>{
+      const sDT=new Date(s.date+'T'+(s.time||'12:00'));
+      foods.filter(f=>{const d=sDT-new Date(f.date+'T'+(f.time||'12:00'));return d>=0&&d<=wMs;})
+        .forEach(f=>[f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;}));
+    });
+    csv+='\nKORRELASJON\nMatvare/Ingrediens,Antall treff,Score\n';
+    Object.entries(sc).sort((a,b)=>b[1].t-a[1].t).forEach(([k,v])=>{csv+=`"${k}","${v.c}","${(v.t/syms.length).toFixed(1)}"\n`;});
+  }
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=`matdagbok_${from}_${to}.csv`; a.click(); URL.revokeObjectURL(url);
+  showToast('CSV lastet ned ✓');
+}
+
+function exportPrint(){
+  const res=getExpEntries(); if(!res)return;
+  const{filtered,from,to}=res;
+  const foods=filtered.filter(e=>e.type==='food'), syms=filtered.filter(e=>e.type==='symptom'), acts=filtered.filter(e=>e.type==='activity');
+  const wMs=analysisWindow*3600000, sc={};
+  syms.forEach(s=>{
+    const sDT=new Date(s.date+'T'+(s.time||'12:00'));
+    foods.filter(f=>{const d=sDT-new Date(f.date+'T'+(f.time||'12:00'));return d>=0&&d<=wMs;})
+      .forEach(f=>[f.name,...(f.ingredients||[])].forEach(k=>{if(!sc[k])sc[k]={c:0,t:0};sc[k].c++;sc[k].t+=s.severity;}));
+  });
+  const ranked=Object.entries(sc).map(([k,v])=>({name:k,score:v.t/Math.max(syms.length,1),count:v.c})).sort((a,b)=>b.score-a.score).slice(0,8);
+  const symC={};syms.forEach(s=>(s.symptoms||[]).forEach(sym=>{symC[sym]=(symC[sym]||0)+1;}));
+  const sorted=[...filtered].sort((a,b)=>new Date(a.date+'T'+(a.time||'00:00'))-new Date(b.date+'T'+(b.time||'00:00')));
+
+  let html=`<!DOCTYPE html><html lang="no"><head><meta charset="UTF-8"><title>Matdagbok ${from}–${to}</title>
+  <style>body{font-family:Georgia,serif;max-width:800px;margin:0 auto;padding:32px;color:#1C1917;font-size:13px;}h1{font-size:1.8rem;margin-bottom:4px;}.sub{color:#78716C;margin-bottom:28px;font-size:0.83rem;}h2{font-size:1.1rem;margin:24px 0 10px;border-bottom:2px solid #E8E0D5;padding-bottom:5px;}table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:12px;}th{background:#1C1917;color:white;padding:7px 9px;text-align:left;}td{padding:6px 9px;border-bottom:1px solid #E8E0D5;vertical-align:top;}tr:nth-child(even) td{background:#FAF7F2;}.badge{display:inline-block;border-radius:50px;padding:2px 7px;font-size:10px;margin:1px;}.bf{background:#EFF5EE;color:#7D9B76;}.br{background:#FEE2E2;color:#E07070;}.bb{background:#EBF3FA;color:#5B8DB8;}.bar-bg{background:#E8E0D5;border-radius:3px;height:7px;}.bar-fill{height:7px;border-radius:3px;background:linear-gradient(90deg,#7D9B76,#E07070);}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px;}.stat{background:#FAF7F2;border:1px solid #E8E0D5;border-radius:9px;padding:12px 8px;text-align:center;}.sn{font-size:1.5rem;font-weight:700;}.sl{font-size:0.7rem;color:#78716C;}@media print{button{display:none;}}</style></head><body>
+  <h1>🌿 Matdagbok</h1><div class="sub">Rapport: ${fmtDate(from)} – ${fmtDate(to)} · Analysevindu: ${analysisWindow}t</div>
+  <div class="stats">
+    <div class="stat"><div class="sn">${foods.length}</div><div class="sl">Måltider</div></div>
+    <div class="stat"><div class="sn">${syms.length}</div><div class="sl">Symptomer</div></div>
+    <div class="stat"><div class="sn">${acts.length}</div><div class="sl">Aktiviteter</div></div>
+    <div class="stat"><div class="sn">${syms.length?(syms.reduce((a,s)=>a+s.severity,0)/syms.length).toFixed(1):'-'}</div><div class="sl">Snitt alvorlighet</div></div>
+  </div>`;
+
+  if(ranked.length){
+    const maxS=ranked[0].score;
+    html+=`<h2>🔍 Mulige mat-utløsere</h2><table><tr><th>Matvare/Ingrediens</th><th>Treff</th><th>Korrelasjon</th></tr>`;
+    ranked.forEach(r=>{const p=Math.round((r.score/maxS)*100);const em=r.score>maxS*0.7?'⚠️':r.score>maxS*0.4?'🟡':'🟢';html+=`<tr><td>${em} ${r.name}</td><td>${r.count}x</td><td><div class="bar-bg"><div class="bar-fill" style="width:${p}%"></div></div></td></tr>`;});
+    html+=`</table>`;
+  }
+  if(Object.keys(symC).length){
+    html+=`<h2>🩺 Hyppigste symptomer</h2><table><tr><th>Symptom</th><th>Antall</th></tr>`;
+    Object.entries(symC).sort((a,b)=>b[1]-a[1]).forEach(([s,c])=>{html+=`<tr><td>${s}</td><td>${c}</td></tr>`;});
+    html+=`</table>`;
+  }
+  html+=`<h2>📋 Full logg</h2><table><tr><th>Dato</th><th>Tid</th><th>Type</th><th>Detaljer</th></tr>`;
+  sorted.forEach(e=>{
+    if(e.type==='food'){
+      const ings=(e.ingredients||[]).map(i=>`<span class="badge bf">${i}</span>`).join('');
+      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🍽️ Mat</td><td><strong>${e.name}</strong>${ings?'<br>'+ings:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
+    } else if(e.type==='symptom'){
+      const sl=(e.symptoms||[]).map(s=>`<span class="badge br">${s}</span>`).join('');
+      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🩺 Symptom</td><td>${sl}<br>Alvorlighet: <strong>${e.severity}/10</strong>${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
+    } else if(e.type==='activity'){
+      const{icon,name,detail}=actLabel(e);
+      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>${icon} Aktivitet</td><td><strong>${name}</strong>${detail?' – '+detail:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
+    }
+  });
+  html+=`</table><p style="margin-top:28px;color:#78716C;font-size:11px;text-align:center;">Generert av Matdagbok · ${new Date().toLocaleDateString('no-NO')}</p></body></html>`;
+  const w=window.open('','_blank'); w.document.write(html); w.document.close(); setTimeout(()=>w.print(),600);
+}
+
+// ═══════════════════════════════════════════════════
+// DELETE ALL
+// ═══════════════════════════════════════════════════
+function deleteAllData(){
+  if(!confirm('Er du sikker? Dette sletter ALL loggdata permanent. Eksporter JSON-backup først!'))return;
+  entries=[];recipes=[];
+  localStorage.removeItem('mb_entries');localStorage.removeItem('mb_recipes');
+  renderQP();renderPresets();updateHeader();
+  showToast('Alle data slettet');
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function updateHeader(){
+  const f=entries.filter(e=>e.type==='food').length;
+  const s=entries.filter(e=>e.type==='symptom').length;
+  const a=entries.filter(e=>e.type==='activity').length;
+  document.getElementById('entry-count').textContent=
+    entries.length===0?'Ingen oppføringer ennå':`${f} måltider · ${s} symptomer · ${a} aktiviteter`;
+}
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
 }
 
 init();
