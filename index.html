@@ -58,6 +58,10 @@ textarea{resize:vertical;min-height:65px;}
 .slider-labels{display:flex;justify-content:space-between;font-size:0.73rem;color:var(--ink-muted);margin-top:4px;}
 input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,var(--rose) 0%,var(--rose) var(--val,20%),var(--border) var(--val,20%));margin:0;padding:0;border:none;margin-bottom:0;}
 input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:white;border:2px solid var(--rose);box-shadow:0 1px 4px var(--shadow);cursor:pointer;}
+/* Stool slider – green center gradient */
+#stool{background:linear-gradient(to right,#E07070 0%,#F6D28A 30%,#7D9B76 50%,#F6D28A 70%,#8B6F47 100%);}
+#stool::-webkit-slider-thumb{border-color:var(--sage);}
+#stool-wrap.skipped{opacity:0.35;pointer-events:none;}
 
 .btn{width:100%;padding:14px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.92rem;font-weight:500;cursor:pointer;transition:all 0.2s;}
 .btn-primary{background:var(--ink);color:var(--cream);}
@@ -235,8 +239,6 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
       <div class="chip sc" onclick="toggleChip(this,'sym')">🤢 Kvalme</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">💨 Oppblåst</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">🤔 Magesmerter</div>
-      <div class="chip sc" onclick="toggleChip(this,'sym')">🚽 Diaré</div>
-      <div class="chip sc" onclick="toggleChip(this,'sym')">🧱 Forstoppelse</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">😴 Tretthet</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">🤧 Hodepine</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">😤 Halsbrann</div>
@@ -244,7 +246,23 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
       <div class="chip sc" onclick="toggleChip(this,'sym')">😮‍💨 Tungpustethet</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">🌙 Søvnvansker</div>
     </div>
-    <label>Alvorlighetsgrad</label>
+
+    <label>💩 Avføring</label>
+    <div class="slider-wrap" id="stool-wrap">
+      <input type="range" id="stool" min="0" max="10" value="5" oninput="updateStoolSlider(this)">
+      <div class="slider-labels">
+        <span>0 – Diaré</span>
+        <span id="stool-lbl" style="font-weight:600;color:var(--sage);">5 – Normalt ✓</span>
+        <span>10 – Forstoppelse</span>
+      </div>
+    </div>
+    <div style="margin-bottom:13px;">
+      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:0.83rem;cursor:pointer;font-weight:400;">
+        <input type="checkbox" id="stool-skip" onchange="toggleStoolSkip(this)" style="width:auto;margin-bottom:0;padding:0;border:none;"> Ikke relevant – hopp over avføring
+      </label>
+    </div>
+
+    <label>Alvorlighetsgrad (andre symptomer)</label>
     <div class="slider-wrap">
       <input type="range" id="severity" min="1" max="10" value="3" oninput="updateSlider(this)" style="--val:20%">
       <div class="slider-labels"><span>1 – Mild</span><span id="sev-val">3</span><span>10 – Alvorlig</span></div>
@@ -387,10 +405,8 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
   <div id="stats-sec"></div>
 
   <div class="card">
-    <div class="card-title">🤖 AI-drevet analyse</div>
-    <p style="font-size:0.83rem;color:var(--ink-muted);margin-bottom:13px;line-height:1.5;">Klikk under for en dypere analyse som inkluderer mat, aktivitet og livsstil.</p>
-    <button class="btn btn-primary" onclick="runAI()" id="ai-btn">✨ Analyser mine data</button>
-    <div id="ai-result"></div>
+    <div class="card-title" style="color:var(--sage);">🤖 AI-analyse</div>
+    <p style="font-size:0.83rem;color:var(--ink-muted);line-height:1.5;">Eksporter data som JSON fra Data-fanen og lim inn i Claude-chatten for en dypere analyse med korrelasjoner og anbefalinger.</p>
   </div>
 
   <div class="card">
@@ -518,6 +534,7 @@ function init() {
   renderPresets();
   renderQP();
   updateHeader();
+  migrateStoolData();
 }
 
 // ═══════════════════════════════════════════════════
@@ -562,6 +579,55 @@ function getSelChipsInParent(parent, cls) {
 function updateSlider(el) {
   el.style.setProperty('--val',((el.value-1)/9*100)+'%');
   document.getElementById('sev-val').textContent=el.value;
+}
+
+function updateStoolSlider(el) {
+  const v=parseInt(el.value);
+  const lbl=document.getElementById('stool-lbl');
+  let txt;
+  if(v===5) txt='5 – Normalt ✓';
+  else if(v<5) txt=`${v} – ${v<=1?'Alvorlig diaré':v<=3?'Løs avføring':'Litt løs'}`;
+  else txt=`${v} – ${v>=9?'Alvorlig forstoppelse':v>=7?'Hard avføring':'Litt fast'}`;
+  lbl.textContent=txt;
+  lbl.style.color=v===5?'var(--sage)':v<3||v>7?'var(--rose)':'var(--amber)';
+}
+
+function toggleStoolSkip(cb) {
+  const wrap=document.getElementById('stool-wrap');
+  wrap.classList.toggle('skipped', cb.checked);
+}
+
+// Convert old Diaré/Forstoppelse entries to stool scale
+function migrateStoolData() {
+  let changed=0;
+  entries=entries.map(e=>{
+    if(e.type!=='symptom'||e.stoolMigrated) return e;
+    const syms=e.symptoms||[];
+    const hasDiare=syms.includes('🚽 Diaré');
+    const hasForst=syms.includes('🧱 Forstoppelse');
+    if(!hasDiare&&!hasForst) return e;
+    const sev=e.severity||5;
+    let stool=5;
+    if(hasDiare){
+      // sev 9-10→0, 7-8→1, 5-6→2, 3-4→3, 1-2→4
+      if(sev>=9) stool=0;
+      else if(sev>=7) stool=1;
+      else if(sev>=5) stool=2;
+      else if(sev>=3) stool=3;
+      else stool=4;
+    } else if(hasForst){
+      // sev 1-2→6, 3-4→7, 5-6→8, 7-8→9, 9-10→10
+      if(sev>=9) stool=10;
+      else if(sev>=7) stool=9;
+      else if(sev>=5) stool=8;
+      else if(sev>=3) stool=7;
+      else stool=6;
+    }
+    const newSyms=syms.filter(s=>s!=='🚽 Diaré'&&s!=='🧱 Forstoppelse');
+    changed++;
+    return {...e, symptoms:newSyms, stool, stoolMigrated:true};
+  });
+  if(changed>0){ save(); console.log(`Migrert ${changed} avføringssymptomer`); }
 }
 
 // ═══════════════════════════════════════════════════
@@ -682,18 +748,25 @@ function saveFood() {
 // ═══════════════════════════════════════════════════
 function saveSymptom() {
   const syms=getSelChips('sym-chips');
-  if(!syms.length){showToast('Velg minst ett symptom');return;}
+  const skip=document.getElementById('stool-skip').checked;
+  const stoolVal=skip?null:parseInt(document.getElementById('stool').value);
+  if(!syms.length&&skip){showToast('Velg minst ett symptom eller logg avføring');return;}
   entries.push({
     id:Date.now(), type:'symptom',
     date:document.getElementById('sym-date').value,
     time:document.getElementById('sym-time').value,
     symptoms:syms,
+    stool:stoolVal,
+    stoolMigrated:true,
     severity:parseInt(document.getElementById('severity').value),
     notes:document.getElementById('sym-notes').value.trim()
   });
   save();
   document.getElementById('sym-notes').value='';
   document.getElementById('severity').value=3; updateSlider(document.getElementById('severity'));
+  document.getElementById('stool').value=5; updateStoolSlider(document.getElementById('stool'));
+  document.getElementById('stool-skip').checked=false;
+  document.getElementById('stool-wrap').classList.remove('skipped');
   document.querySelectorAll('#sym-chips .chip').forEach(c=>c.classList.remove('selected'));
   showToast('Symptom lagret ✓'); init();
 }
@@ -791,10 +864,13 @@ function renderHistory() {
         ${e.notes?`<div style="font-size:0.78rem;color:var(--ink-muted);margin-top:5px">${e.notes}</div>`:''}
       </div>`;
     } else if(e.type==='symptom'){
+      const stoolTxt=e.stool!=null?stoolLabel(e.stool):'';
+      const symList=[...(e.symptoms||[])];
+      if(stoolTxt) symList.push(stoolTxt);
       html+=`<div class="entry se">
         <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
         <div class="entry-time">🕐 ${e.time}</div>
-        <div class="entry-title">🩺 ${e.symptoms?.join(', ')}</div>
+        <div class="entry-title">🩺 ${symList.join(', ')||'(ingen symptomer)'}</div>
         <div class="entry-tags"><span class="tag ts">Alvorlighet: ${e.severity}/10</span></div>
         ${e.notes?`<div style="font-size:0.78rem;color:var(--ink-muted);margin-top:5px">${e.notes}</div>`:''}
       </div>`;
@@ -811,6 +887,13 @@ function renderHistory() {
   list.innerHTML=html;
 }
 
+function stoolLabel(v){
+  if(v==null) return '';
+  if(v===5) return '💩 Avføring: Normal';
+  if(v<5){const t=v<=1?'Alvorlig diaré':v<=3?'Løs avføring':'Litt løs';return `💩 Avføring: ${v}/10 – ${t}`;}
+  const t=v>=9?'Alvorlig forstoppelse':v>=7?'Hard avføring':'Litt fast';
+  return `💩 Avføring: ${v}/10 – ${t}`;
+}
 function fmtDate(d){return d?new Date(d+'T12:00:00').toLocaleDateString('no-NO',{weekday:'long',day:'numeric',month:'long'}):'';}
 
 // ═══════════════════════════════════════════════════
@@ -924,47 +1007,7 @@ function renderAnalysis() {
   sec.innerHTML=html;
 }
 
-// ═══════════════════════════════════════════════════
-// AI ANALYSIS
-// ═══════════════════════════════════════════════════
-async function runAI() {
-  const foods=entries.filter(e=>e.type==='food');
-  const syms=entries.filter(e=>e.type==='symptom');
-  const acts=entries.filter(e=>e.type==='activity');
-  if(!syms.length){showToast('Logg minst ett symptom først');return;}
-  const btn=document.getElementById('ai-btn'), result=document.getElementById('ai-result');
-  btn.disabled=true; btn.textContent='Analyserer'; btn.classList.add('ld');
-  result.innerHTML=`<div class="ai-result" style="color:var(--ink-muted)">Analyserer dine data<span class="ld"></span></div>`;
 
-  // Summarize for AI (avoid sending too much data)
-  const recentEntries = [...entries].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,120);
-  const prompt=`Du er en ernærings- og fordøyelsesekspert. Analyser denne mat-, aktivitets- og symptomloggen og gi en personlig, konkret analyse på norsk.
-
-ANALYSEVINDU: ${analysisWindow} timer (tid mellom mat og symptom som analyseres)
-ANTALL OPPFØRINGER: ${foods.length} måltider, ${syms.length} symptomer, ${acts.length} aktiviteter
-
-DATA (nyeste først):
-${JSON.stringify(recentEntries, null, 1)}
-
-Gi en analyse med disse delene:
-1. **Sammendrag** – hva ser du i dataene?
-2. **Mulige mat-utløsere** – hvilke matvarer/ingredienser opptrer hyppigst før symptomer?
-3. **Aktivitetens rolle** – ser du at fasting, trening, rødlysbehandling eller søvn påvirker symptomene?
-4. **Mønstre og korrelasjoner** – er det tidspunkter på dagen, kombinasjoner eller andre mønstre?
-5. **Konkrete anbefalinger** – hva bør prøves, unngås eller logges videre?
-
-Vær konkret, personlig og praktisk. Avslutt med en oppmuntrende setning.`;
-
-  try {
-    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,messages:[{role:"user",content:prompt}]})});
-    const data=await res.json();
-    const text=data.content?.[0]?.text||'Kunne ikke hente analyse.';
-    result.innerHTML=`<div class="ai-result"><h4>🤖 AI-analyse</h4>${text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/^(\d+\. )/gm,'<br><strong>$1</strong>').replace(/\n/g,'<br>')}</div>`;
-  } catch(e){
-    result.innerHTML=`<div class="ai-result" style="color:var(--rose)">Noe gikk galt. Prøv igjen.</div>`;
-  }
-  btn.disabled=false; btn.textContent='✨ Analyser mine data'; btn.classList.remove('ld');
-}
 
 // ═══════════════════════════════════════════════════
 // RECIPE CRUD
