@@ -58,6 +58,12 @@ textarea{resize:vertical;min-height:65px;}
 .slider-labels{display:flex;justify-content:space-between;font-size:0.73rem;color:var(--ink-muted);margin-top:4px;}
 input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:linear-gradient(to right,var(--rose) 0%,var(--rose) var(--val,20%),var(--border) var(--val,20%));margin:0;padding:0;border:none;margin-bottom:0;}
 input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:white;border:2px solid var(--rose);box-shadow:0 1px 4px var(--shadow);cursor:pointer;}
+/* Daytime checkboxes */
+.daytime-cb{display:flex;align-items:center;gap:6px;padding:7px 14px;border:1.5px solid var(--border);border-radius:50px;font-size:0.82rem;cursor:pointer;background:white;color:var(--ink-light);transition:all 0.15s;user-select:none;}
+.daytime-cb:hover{border-color:var(--sage);}
+.daytime-cb input{width:15px;height:15px;cursor:pointer;accent-color:var(--sage);margin:0;padding:0;border:none;flex-shrink:0;}
+.daytime-cb:has(input:checked){background:var(--sage-bg);border-color:var(--sage);color:var(--ink);}
+
 /* Stool slider – green center gradient */
 #stool{background:linear-gradient(to right,#E07070 0%,#F6D28A 30%,#7D9B76 50%,#F6D28A 70%,#8B6F47 100%);}
 #stool::-webkit-slider-thumb{border-color:var(--sage);}
@@ -234,6 +240,15 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
       <div><label>Dato</label><input type="date" id="sym-date"></div>
       <div><label>Tidspunkt</label><input type="time" id="sym-time"></div>
     </div>
+
+    <label>Tidspunkt på dagen</label>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px;" id="daytime-wrap">
+      <label class="daytime-cb"><input type="checkbox" value="Hele" onchange="handleDaytime(this)"> Hele</label>
+      <label class="daytime-cb"><input type="checkbox" value="Tidlig" onchange="handleDaytime(this)"> Tidlig</label>
+      <label class="daytime-cb"><input type="checkbox" value="Midt" onchange="handleDaytime(this)"> Midt</label>
+      <label class="daytime-cb"><input type="checkbox" value="Sent" onchange="handleDaytime(this)"> Sent</label>
+    </div>
+
     <label>Type symptom</label>
     <div class="chips" id="sym-chips">
       <div class="chip sc" onclick="toggleChip(this,'sym')">🤢 Kvalme</div>
@@ -246,28 +261,29 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;hei
       <div class="chip sc" onclick="toggleChip(this,'sym')">😮‍💨 Tungpustethet</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">🌙 Søvnvansker</div>
       <div class="chip sc" onclick="toggleChip(this,'sym')">🦴 Leddsmerter</div>
+      <div class="chip sc" id="stool-chip" onclick="toggleStoolChip(this)">💩 Avføring</div>
     </div>
 
-    <label>💩 Avføring</label>
-    <div class="slider-wrap" id="stool-wrap">
-      <input type="range" id="stool" min="0" max="10" value="5" oninput="updateStoolSlider(this)">
-      <div class="slider-labels">
-        <span>0 – Diaré</span>
-        <span id="stool-lbl" style="font-weight:600;color:var(--sage);">5 – Normalt ✓</span>
-        <span>10 – Forstoppelse</span>
+    <div id="stool-slider-wrap" style="display:none;">
+      <label>💩 Avføringsskala</label>
+      <div class="slider-wrap" id="stool-wrap">
+        <input type="range" id="stool" min="0" max="10" value="5" oninput="updateStoolSlider(this)">
+        <div class="slider-labels">
+          <span>0 – Diaré</span>
+          <span id="stool-lbl" style="font-weight:600;color:var(--sage);">5 – Normalt ✓</span>
+          <span>10 – Forstoppelse</span>
+        </div>
       </div>
     </div>
-    <div style="margin-bottom:13px;">
-      <label style="display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:0.83rem;cursor:pointer;font-weight:400;">
-        <input type="checkbox" id="stool-skip" onchange="toggleStoolSkip(this)" style="width:auto;margin-bottom:0;padding:0;border:none;"> Ikke relevant – hopp over avføring
-      </label>
+
+    <div id="severity-wrap" style="display:none;">
+      <label>Alvorlighetsgrad</label>
+      <div class="slider-wrap">
+        <input type="range" id="severity" min="1" max="10" value="3" oninput="updateSlider(this)" style="--val:20%">
+        <div class="slider-labels"><span>1 – Mild</span><span id="sev-val">3</span><span>10 – Alvorlig</span></div>
+      </div>
     </div>
 
-    <label>Alvorlighetsgrad (andre symptomer)</label>
-    <div class="slider-wrap">
-      <input type="range" id="severity" min="1" max="10" value="3" oninput="updateSlider(this)" style="--val:20%">
-      <div class="slider-labels"><span>1 – Mild</span><span id="sev-val">3</span><span>10 – Alvorlig</span></div>
-    </div>
     <label>Notater (når startet, hva du tror, etc.)</label>
     <textarea id="sym-notes" placeholder="Beskriv symptomet nærmere…"></textarea>
     <button class="btn btn-primary" onclick="saveSymptom()">✓ Lagre symptom</button>
@@ -566,6 +582,7 @@ function setHistFilter(f, el) {
 function toggleChip(el,g) {
   if(g==='meal') el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
   el.classList.toggle('selected');
+  if(g==='sym') updateSeverityWrap();
 }
 function getSelChips(id) {
   return [...document.querySelectorAll(`#${id} .chip.selected`)].map(c=>c.textContent.trim());
@@ -593,9 +610,17 @@ function updateStoolSlider(el) {
   lbl.style.color=v===5?'var(--sage)':v<3||v>7?'var(--rose)':'var(--amber)';
 }
 
-function toggleStoolSkip(cb) {
-  const wrap=document.getElementById('stool-wrap');
-  wrap.classList.toggle('skipped', cb.checked);
+function toggleStoolChip(el) {
+  el.classList.toggle('selected');
+  const active = el.classList.contains('selected');
+  document.getElementById('stool-slider-wrap').style.display = active ? 'block' : 'none';
+  updateSeverityWrap();
+}
+
+function updateSeverityWrap() {
+  const otherSelected = [...document.querySelectorAll('#sym-chips .chip.selected')]
+    .some(c => c.id !== 'stool-chip');
+  document.getElementById('severity-wrap').style.display = otherSelected ? 'block' : 'none';
 }
 
 // Convert old Diaré/Forstoppelse entries to stool scale
@@ -629,6 +654,35 @@ function migrateStoolData() {
     return {...e, symptoms:newSyms, stool, stoolMigrated:true};
   });
   if(changed>0){ save(); console.log(`Migrert ${changed} avføringssymptomer`); }
+}
+
+// ═══════════════════════════════════════════════════
+// DAYTIME CHECKBOXES
+// ═══════════════════════════════════════════════════
+function handleDaytime(cb) {
+  const all = [...document.querySelectorAll('#daytime-wrap input[type="checkbox"]')];
+  if(cb.value === 'Hele') {
+    // Hele checks/unchecks all
+    all.forEach(c => c.checked = cb.checked);
+  } else {
+    // If any of Tidlig/Midt/Sent is unchecked, uncheck Hele
+    const hele = all.find(c => c.value === 'Hele');
+    const others = all.filter(c => c.value !== 'Hele');
+    hele.checked = others.every(c => c.checked);
+  }
+}
+
+function getDaytime() {
+  const checked = [...document.querySelectorAll('#daytime-wrap input[type="checkbox"]:checked')]
+    .map(c => c.value)
+    .filter(v => v !== 'Hele'); // store Tidlig/Midt/Sent, Hele is implicit if all three
+  const hele = document.querySelector('#daytime-wrap input[value="Hele"]')?.checked;
+  if(hele) return 'Hele dagen';
+  return checked.length ? checked.join(', ') + ' på dagen' : '';
+}
+
+function resetDaytime() {
+  document.querySelectorAll('#daytime-wrap input[type="checkbox"]').forEach(c => c.checked = false);
 }
 
 // ═══════════════════════════════════════════════════
@@ -748,27 +802,31 @@ function saveFood() {
 // SAVE SYMPTOM
 // ═══════════════════════════════════════════════════
 function saveSymptom() {
-  const syms=getSelChips('sym-chips');
-  const skip=document.getElementById('stool-skip').checked;
-  const stoolVal=skip?null:parseInt(document.getElementById('stool').value);
-  if(!syms.length&&skip){showToast('Velg minst ett symptom eller logg avføring');return;}
+  const stoolChip = document.getElementById('stool-chip');
+  const stoolActive = stoolChip.classList.contains('selected');
+  const syms = getSelChips('sym-chips').filter(s => s !== '💩 Avføring');
+  const stoolVal = stoolActive ? parseInt(document.getElementById('stool').value) : null;
+  if(!syms.length && !stoolActive) { showToast('Velg minst ett symptom'); return; }
+  const daytime = getDaytime();
   entries.push({
     id:Date.now(), type:'symptom',
     date:document.getElementById('sym-date').value,
     time:document.getElementById('sym-time').value,
+    daytime: daytime || null,
     symptoms:syms,
     stool:stoolVal,
     stoolMigrated:true,
-    severity:parseInt(document.getElementById('severity').value),
+    severity: syms.length ? parseInt(document.getElementById('severity').value) : null,
     notes:document.getElementById('sym-notes').value.trim()
   });
   save();
   document.getElementById('sym-notes').value='';
   document.getElementById('severity').value=3; updateSlider(document.getElementById('severity'));
   document.getElementById('stool').value=5; updateStoolSlider(document.getElementById('stool'));
-  document.getElementById('stool-skip').checked=false;
-  document.getElementById('stool-wrap').classList.remove('skipped');
   document.querySelectorAll('#sym-chips .chip').forEach(c=>c.classList.remove('selected'));
+  document.getElementById('stool-slider-wrap').style.display='none';
+  document.getElementById('severity-wrap').style.display='none';
+  resetDaytime();
   showToast('Symptom lagret ✓'); init();
 }
 
@@ -868,11 +926,12 @@ function renderHistory() {
       const stoolTxt=e.stool!=null?stoolLabel(e.stool):'';
       const symList=[...(e.symptoms||[])];
       if(stoolTxt) symList.push(stoolTxt);
+      const timeStr = e.daytime ? `${e.time ? e.time+' · ' : ''}${e.daytime}` : (e.time||'');
       html+=`<div class="entry se">
         <button class="entry-del" onclick="deleteEntry(${e.id})">✕</button>
-        <div class="entry-time">🕐 ${e.time}</div>
+        <div class="entry-time">🕐 ${timeStr}</div>
         <div class="entry-title">🩺 ${symList.join(', ')||'(ingen symptomer)'}</div>
-        <div class="entry-tags"><span class="tag ts">Alvorlighet: ${e.severity}/10</span></div>
+        <div class="entry-tags">${e.severity!=null?`<span class="tag ts">Alvorlighet: ${e.severity}/10</span>`:''}</div>
         ${e.notes?`<div style="font-size:0.78rem;color:var(--ink-muted);margin-top:5px">${e.notes}</div>`:''}
       </div>`;
     } else if(e.type==='activity'){
@@ -1123,9 +1182,10 @@ function exportCSV(){
   filtered.filter(e=>e.type==='food').forEach(e=>{
     csv+=[e.date,e.time||'',e.name,(e.meal||[]).join('|'),(e.ingredients||[]).join('|'),(e.notes||'').replace(/,/g,' ')].map(v=>`"${v}"`).join(',')+'\n';
   });
-  csv+='\nSYMPTOMLOGG\nDato,Tidspunkt,Symptomer,Alvorlighet,Notater\n';
+  csv+='\nSYMPTOMLOGG\nDato,Tidspunkt,Symptomer,Alvorlighet,Avføring (0=diaré 5=normalt 10=forstoppelse),Tidspunkt på dagen,Notater\n';
   filtered.filter(e=>e.type==='symptom').forEach(e=>{
-    csv+=[e.date,e.time||'',(e.symptoms||[]).join('|'),e.severity||'',(e.notes||'').replace(/,/g,' ')].map(v=>`"${v}"`).join(',')+'\n';
+    const stoolExp=e.stool!=null?e.stool:'';
+    csv+=[e.date,e.time||'',(e.symptoms||[]).join('|'),e.severity||'',stoolExp,e.daytime||'',(e.notes||'').replace(/,/g,' ')].map(v=>`"${v}"`).join(',')+'\n';
   });
   csv+='\nAKTIVITETSLOGG\nDato,Tidspunkt,Type,Detaljer,Notater\n';
   filtered.filter(e=>e.type==='activity').forEach(e=>{
@@ -1192,7 +1252,10 @@ function exportPrint(){
       html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🍽️ Mat</td><td><strong>${e.name}</strong>${ings?'<br>'+ings:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
     } else if(e.type==='symptom'){
       const sl=(e.symptoms||[]).map(s=>`<span class="badge br">${s}</span>`).join('');
-      html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>🩺 Symptom</td><td>${sl}<br>Alvorlighet: <strong>${e.severity}/10</strong>${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
+      const stoolPrint=e.stool!=null?`<span class="badge br">💩 Avføring: ${e.stool}/10</span>`:'';
+      const daytimePrint=e.daytime?` · ${e.daytime}`:'';
+      const sevPrint=e.severity!=null?`Alvorlighet: <strong>${e.severity}/10</strong>`:'';
+      html+=`<tr><td>${e.date}</td><td>${(e.time||'')+daytimePrint}</td><td>🩺 Symptom</td><td>${sl}${stoolPrint}${sevPrint?'<br>'+sevPrint:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
     } else if(e.type==='activity'){
       const{icon,name,detail}=actLabel(e);
       html+=`<tr><td>${e.date}</td><td>${e.time||''}</td><td>${icon} Aktivitet</td><td><strong>${name}</strong>${detail?' – '+detail:''}${e.notes?'<br><em>'+e.notes+'</em>':''}</td></tr>`;
